@@ -1,0 +1,71 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Apariencia del sitio</h1></div>
+<%- include('partials/avisos') %>
+
+<section class="a-preview-wrap">
+  <div id="vista-previa" class="a-preview" aria-label="Vista previa en tiempo real">
+    <p class="pv-eyebrow" id="pv-eyebrow"><%= aj.textos.heroEyebrow %></p>
+    <h2 class="pv-titulo" id="pv-titulo"><%= aj.textos.heroTitulo %></h2>
+    <p class="pv-texto" id="pv-sub"><%= aj.textos.heroSubtitulo %></p>
+    <p><span class="pv-btn">Comprar en Amazon</span> <span class="pv-btn pv-ghost">Ver ficha</span></p>
+    <div class="pv-card"><strong>Capicúa en Ajedrez</strong><br><small>Así se verán las tarjetas y los textos.</small></div>
+  </div>
+  <p id="aviso-contraste" class="a-hint" aria-live="polite"></p>
+</section>
+
+<form method="post" action="/admin/apariencia" enctype="multipart/form-data" class="a-form">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <fieldset><legend>Títulos y textos principales</legend>
+    <% [['heroEyebrow', 'Línea superior (cargos)'], ['heroTitulo', 'Título principal del inicio'], ['heroSubtitulo', 'Frase de presentación'], ['tituloLibros', 'Título de la sección de libros'], ['tituloRincon', 'Título de El Rincón del General'], ['tituloNoticias', 'Título de noticias y artículos'], ['tituloEventos', 'Título de eventos'], ['piePagina', 'Texto del pie de página']].forEach(t => { %>
+      <div class="a-field"><label for="t_<%= t[0] %>"><%= t[1] %></label><input id="t_<%= t[0] %>" type="text" name="t_<%= t[0] %>" maxlength="300" value="<%= aj.textos[t[0]] %>"></div>
+    <% }) %>
+  </fieldset>
+
+  <fieldset><legend>Paleta de colores</legend>
+    <div class="a-paletas">
+      <% paletas.forEach(p => { %><button type="button" class="a-paleta" data-paleta="<%= JSON.stringify(p) %>"><span style="background:<%= p.fondo %>"></span><span style="background:<%= p.superficie %>"></span><span style="background:<%= p.acento %>"></span><em><%= p.nombre %></em></button><% }) %>
+    </div>
+    <div class="a-colores">
+      <% [['fondo', 'Fondo'], ['superficie', 'Tarjetas y secciones'], ['texto', 'Texto'], ['acento', 'Acento (botones, títulos dorados)']].forEach(c => { %>
+        <label class="a-color"><span><%= c[1] %></span><input type="color" name="c_<%= c[0] %>" value="<%= aj.tema[c[0]] %>"></label>
+      <% }) %>
+    </div>
+    <small>El sitio rechazará combinaciones con poco contraste para que siempre se lea bien.</small>
+  </fieldset>
+
+  <fieldset><legend>Tipografías</legend>
+    <p class="a-muted">Elige con un clic. La vista previa de arriba cambia al instante.</p>
+    <h3>Títulos</h3>
+    <div class="a-fuentes">
+      <% fuentes.forEach(f => { %><label class="a-fuente"><input type="radio" name="f_titulos" value="<%= f.id %>" data-familia="<%= f.familia %>" <%= aj.tipografia.titulos === f.id ? 'checked' : '' %>><span style="font-family:<%= f.familia %>"><%= f.nombre %><small>Juan Manuel Fructuoso Heredia</small></span></label><% }) %>
+    </div>
+    <h3>Texto de lectura</h3>
+    <div class="a-fuentes">
+      <% fuentes.forEach(f => { %><label class="a-fuente"><input type="radio" name="f_cuerpo" value="<%= f.id %>" data-familia="<%= f.familia %>" <%= aj.tipografia.cuerpo === f.id ? 'checked' : '' %>><span style="font-family:<%= f.familia %>"><%= f.nombre %><small>Más de 30 años al servicio de la verdad.</small></span></label><% }) %>
+    </div>
+  </fieldset>
+
+  <fieldset><legend>Cubrefalta del reproductor de YouTube</legend>
+    <div class="a-field"><label for="cf_modo">Estilo</label>
+      <select id="cf_modo" name="cf_modo">
+        <option value="ninguno" <%= aj.cubrefalta.modo === 'ninguno' ? 'selected' : '' %>>Sin marco (reproductor simple)</option>
+        <option value="marco" <%= aj.cubrefalta.modo === 'marco' ? 'selected' : '' %>>Marco institucional con póster propio</option>
+        <option value="franja" <%= aj.cubrefalta.modo === 'franja' ? 'selected' : '' %>>Marco + franja superior que cubre el título y el canal</option>
+      </select>
+    </div>
+    <div class="a-field"><label for="cf_etiqueta">Texto institucional (franja y pie del video)</label><input id="cf_etiqueta" type="text" name="cf_etiqueta" maxlength="100" value="<%= aj.cubrefalta.etiqueta %>"></div>
+    <label class="a-check"><input type="checkbox" name="cf_usarAcento" <%= aj.cubrefalta.colorMarco ? '' : 'checked' %>> Usar el color de acento en el marco</label>
+    <div class="a-field"><label for="cf_colorMarco">Color propio del marco</label><input id="cf_colorMarco" type="color" name="cf_colorMarco" value="<%= aj.cubrefalta.colorMarco || aj.tema.acento %>"></div>
+    <div class="a-field"><label for="logo">Logo para la franja (JPG, PNG o WEBP, máx. 3 MB)</label>
+      <% if (aj.cubrefalta.logo) { %><div class="a-actual"><img src="<%= aj.cubrefalta.logo %>" alt="Logo actual" width="60"><label class="a-check"><input type="checkbox" name="remove_logo"> Quitar el logo</label></div><% } %>
+      <input id="logo" type="file" name="logo" accept="image/jpeg,image/png,image/webp">
+    </div>
+    <div class="a-alert info">
+      <strong>Importante:</strong> el marco y la franja cubren el póster y la barra superior (título y canal), pero los controles del reproductor y el logo de YouTube dentro de la barra inferior permanecen, porque los términos de YouTube no permiten ocultarlos. Si necesitas una transmisión sin ninguna marca de YouTube, hay que alojar el video en un servicio propio.
+    </div>
+  </fieldset>
+
+  <div class="a-bar"><button class="a-btn" type="submit">Guardar apariencia</button></div>
+</form>
+<%- include('partials/bottom') %>

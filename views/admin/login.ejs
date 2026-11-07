@@ -1,0 +1,14 @@
+<%- include('partials/min-top', { titulo: 'Ingresar' }) %>
+<main class="a-card-solo">
+  <h1>Panel de administración</h1>
+  <p class="a-muted"><%= site.nombre %></p>
+  <% if (locals.ok) { %><div class="a-alert ok"><%= ok %></div><% } %>
+  <% if (locals.error) { %><div class="a-alert err" role="alert"><%= error %></div><% } %>
+  <form method="post" action="/admin/login" class="a-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="a-field"><label for="email">Correo</label><input id="email" type="email" name="email" required autocomplete="username" autofocus></div>
+    <div class="a-field"><label for="clave">Contraseña</label><input id="clave" type="password" name="clave" required autocomplete="current-password"></div>
+    <button class="a-btn" type="submit">Entrar</button>
+  </form>
+</main>
+</body></html>

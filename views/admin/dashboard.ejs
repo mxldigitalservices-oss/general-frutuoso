@@ -1,0 +1,38 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Resumen</h1></div>
+<%- include('partials/avisos') %>
+
+<div class="a-stats">
+  <a class="a-stat" href="/admin/libros"><strong><%= stats.libros ?? '—' %></strong><span>Libros</span></a>
+  <a class="a-stat" href="/admin/eventos"><strong><%= stats.eventos ?? '—' %></strong><span>Eventos</span></a>
+  <a class="a-stat" href="/admin/publicaciones"><strong><%= stats.publicaciones ?? '—' %></strong><span>Publicaciones</span></a>
+  <a class="a-stat" href="/admin/mensajes"><strong><%= stats.noLeidos ?? '—' %></strong><span>Mensajes sin leer</span></a>
+</div>
+
+<% if (user.rol === 'admin') { %>
+<h2>Interruptores del sitio</h2>
+<p class="a-muted">Un clic para mostrar u ocultar estas secciones en el sitio público.</p>
+<div class="a-switches">
+  <% [['eventos', 'Sección de eventos', 'Agenda, menú y bloque de próximos eventos.'], ['enVivo', 'Sección En vivo', 'Transmisión en el inicio, menú y página /en-vivo.']].forEach(s => { const activo = aj.interruptores[s[0]]; %>
+  <form class="a-switch" method="post" action="/admin/interruptor/<%= s[0] %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button type="submit" class="a-toggle <%= activo ? 'on' : '' %>" role="switch" aria-checked="<%= activo %>" aria-label="<%= s[1] %>"><span></span></button>
+    <div><strong><%= s[1] %>: <%= activo ? 'ACTIVADA' : 'DESACTIVADA' %></strong><small><%= s[2] %></small></div>
+  </form>
+  <% }) %>
+</div>
+<p><a href="/admin/en-vivo">Configurar el enlace de la transmisión →</a></p>
+<% } %>
+
+<% if (actividad && actividad.length) { %>
+<h2>Actividad reciente</h2>
+<table class="a-table">
+  <thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead>
+  <tbody>
+  <% actividad.forEach(a => { %>
+    <tr><td><%= new Date(a.creado_en).toLocaleString('es-DO') %></td><td><%= a.usuario || '—' %></td><td><%= a.accion %> · <%= a.entidad %></td><td><%= a.detalle || '' %></td></tr>
+  <% }) %>
+  </tbody>
+</table>
+<% } %>
+<%- include('partials/bottom') %>

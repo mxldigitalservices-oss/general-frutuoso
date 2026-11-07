@@ -1,0 +1,3 @@
+<% if (locals.ok) { %><div class="a-alert ok" role="status"><%= ok %></div><% } %>
+<% if (locals.error) { %><div class="a-alert err" role="alert"><%= error %></div><% } %>
+<% if (locals.errors && errors.length) { %><div class="a-alert err" role="alert"><strong>Revisa lo siguiente:</strong><ul><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul></div><% } %>

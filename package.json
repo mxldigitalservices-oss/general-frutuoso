@@ -1,0 +1,32 @@
+{
+  "name": "sitio-general-fructuoso",
+  "version": "2.0.0",
+  "description": "Portal oficial de Juan Manuel Fructuoso Heredia — General (r), abogado y escritor",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js",
+    "crear-usuario": "node scripts/crear-usuario.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "connect-redis": "^7.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "mongoose": "^8.6.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^10.3.1",
+    "pg": "^8.12.0"
+  },
+  "license": "ISC"
+}

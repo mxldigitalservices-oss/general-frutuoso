@@ -1,0 +1,92 @@
+<%- include('partials/head', { title: '', desc: ajustes.textos.heroSubtitulo }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow"><%= ajustes.textos.heroEyebrow %></p>
+      <h1><%= ajustes.textos.heroTitulo %></h1>
+      <p class="lead"><%= ajustes.textos.heroSubtitulo %></p>
+      <div class="actions">
+        <a class="btn" href="/libros">Ver libros</a>
+        <a class="btn btn-ghost" href="/biografia">Conocer su historia</a>
+      </div>
+    </div>
+    <% if (libros.length) { %>
+    <a class="hero-libro" href="/libros/<%= libros[0].slug %>" aria-label="Ver <%= libros[0].titulo %>">
+      <img src="<%= libros[0].portada || '/img/portada-placeholder.svg' %>" alt="Portada de <%= libros[0].titulo %>">
+    </a>
+    <% } %>
+  </div>
+</section>
+
+<% if (ajustes.interruptores.enVivo && ajustes.enVivo.youtubeId) { %>
+<section class="section vivo-banner">
+  <div class="wrap">
+    <h2 class="section-title"><span class="dot" aria-hidden="true"></span> <%= ajustes.enVivo.titulo %></h2>
+    <%- include('partials/cubrefalta', { id: ajustes.enVivo.youtubeId, vivo: true, titulo: ajustes.enVivo.titulo }) %>
+  </div>
+</section>
+<% } %>
+
+<% if (libros.length) { %>
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title"><%= ajustes.textos.tituloLibros %></h2>
+    <div class="grid grid-3">
+      <% libros.forEach(l => { %><%- include('partials/libro-card', { l }) %><% }) %>
+    </div>
+    <p class="center"><a class="btn btn-ghost" href="/libros">Ver todas las obras</a></p>
+  </div>
+</section>
+<% } %>
+
+<% if (rincon) { %>
+<section class="section alt">
+  <div class="wrap narrow">
+    <h2 class="section-title"><%= ajustes.textos.tituloRincon %></h2>
+    <p class="meta"><%= fmtFecha(rincon.fecha) %></p>
+    <h3 class="pregunta"><%= rincon.titulo %></h3>
+    <% if (rincon.videoYoutubeId) { %><%- include('partials/cubrefalta', { id: rincon.videoYoutubeId, titulo: rincon.titulo }) %><% } %>
+    <p class="reflexion"><%= rincon.resumen %></p>
+    <p><a class="btn btn-ghost" href="/rincon-del-general">Ver más reflexiones</a></p>
+  </div>
+</section>
+<% } %>
+
+<% if (ajustes.interruptores.eventos && eventos.length) { %>
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title"><%= ajustes.textos.tituloEventos %></h2>
+    <div class="grid grid-3">
+      <% eventos.forEach(e => { %>
+      <article class="card evento-mini">
+        <div class="card-body">
+          <p class="meta"><span class="badge"><%= e.tipo %></span></p>
+          <h3><%= e.titulo %></h3>
+          <p><strong><%= fmtFecha(e.fecha) %></strong><%= e.hora ? ' · ' + e.hora : '' %></p>
+          <p class="muted"><%= e.lugar %><%= e.ciudad ? ', ' + e.ciudad : '' %></p>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+    <p class="center"><a class="btn btn-ghost" href="/eventos">Ver agenda completa</a></p>
+  </div>
+</section>
+<% } %>
+
+<% if (noticias.length) { %>
+<section class="section alt">
+  <div class="wrap">
+    <h2 class="section-title"><%= ajustes.textos.tituloNoticias %></h2>
+    <div class="grid grid-3">
+      <% noticias.forEach(p => { %><%- include('partials/pub-card', { p }) %><% }) %>
+    </div>
+    <p class="center"><a class="btn btn-ghost" href="/noticias">Ver todas</a></p>
+  </div>
+</section>
+<% } %>
+
+</main>
+<%- include('partials/footer') %>

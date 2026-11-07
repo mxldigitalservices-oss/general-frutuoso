@@ -1,0 +1,14 @@
+<article class="card libro">
+  <a class="libro-img" href="/libros/<%= l.slug %>" tabindex="-1" aria-hidden="true">
+    <img src="<%= l.portada || '/img/portada-placeholder.svg' %>" alt="" loading="lazy">
+  </a>
+  <div class="card-body">
+    <% if (l.subtitulo) { %><p class="meta"><span class="badge"><%= l.subtitulo %></span></p><% } %>
+    <h3><a href="/libros/<%= l.slug %>"><%= l.titulo %></a></h3>
+    <p class="clamp"><%= l.sinopsis %></p>
+    <div class="actions">
+      <a class="btn" href="<%= l.enlaceAmazon || site.amazonAutor %>" target="_blank" rel="noopener noreferrer">Comprar en Amazon</a>
+      <a class="btn btn-ghost" href="/libros/<%= l.slug %>">Ver ficha</a>
+    </div>
+  </div>
+</article>

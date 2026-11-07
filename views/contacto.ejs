@@ -1,0 +1,24 @@
+<%- include('partials/head', { title: 'Contacto', desc: 'Escríbele a Juan Manuel Fructuoso Heredia.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap"><p class="eyebrow">Escríbenos</p><h1>Contacto</h1></div></section>
+<section class="section"><div class="wrap narrow contacto-grid">
+  <div>
+    <% if (enviado) { %><div class="alert ok" role="status">¡Gracias! Tu mensaje fue enviado.</div><% } %>
+    <% if (error) { %><div class="alert error" role="alert"><%= error %></div><% } %>
+    <form method="post" action="/contacto" class="form" novalidate>
+      <label>Nombre<input type="text" name="nombre" maxlength="120" required value="<%= valores.nombre || '' %>" autocomplete="name"></label>
+      <label>Correo electrónico<input type="email" name="email" maxlength="160" required value="<%= valores.email || '' %>" autocomplete="email"></label>
+      <label>Mensaje<textarea name="mensaje" rows="6" maxlength="3000" required><%= valores.mensaje || '' %></textarea></label>
+      <div class="hp" aria-hidden="true"><label>No llenar este campo<input type="text" name="web" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" type="submit">Enviar mensaje</button>
+    </form>
+  </div>
+  <aside class="card"><div class="card-body">
+    <h3>También por WhatsApp</h3>
+    <p class="muted">Respuesta directa para consultas sobre libros, presentaciones y entrevistas.</p>
+    <p><a class="btn btn-ghost" href="<%= site.whatsapp %>" target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a></p>
+  </div></aside>
+</div></section>
+</main>
+<%- include('partials/footer') %>

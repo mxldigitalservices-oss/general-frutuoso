@@ -1,0 +1,17 @@
+<% const cf = ajustes.cubrefalta; %>
+<figure class="cf cf-modo-<%= cf.modo %><%= locals.vivo ? ' cf-vivo' : '' %>">
+  <div class="cf-frame">
+    <button class="cf-poster" type="button" data-yt="<%= id %>" data-vivo="<%= locals.vivo ? 1 : 0 %>" aria-label="Reproducir video<%= locals.titulo ? ': ' + titulo : '' %>">
+      <img src="https://i.ytimg.com/vi/<%= id %>/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+      <span class="cf-play" aria-hidden="true"></span>
+      <% if (locals.vivo) { %><span class="cf-badge">EN VIVO</span><% } %>
+    </button>
+    <% if (cf.modo === 'franja') { %>
+      <div class="cf-mascara" aria-hidden="true">
+        <% if (cf.logo) { %><img src="<%= cf.logo %>" alt="" width="28" height="28"><% } %>
+        <span><%= cf.etiqueta %></span>
+      </div>
+    <% } %>
+  </div>
+  <% if (cf.modo !== 'ninguno' && cf.etiqueta) { %><figcaption class="cf-cap"><%= cf.etiqueta %></figcaption><% } %>
+</figure>

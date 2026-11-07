@@ -1,0 +1,41 @@
+<% const rol = user.rol; const on = (p) => (path === p || (p !== '/' && path.startsWith(p + '/'))) ? 'on' : ''; %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title><%= locals.titulo ? titulo + ' · ' : '' %>Panel · <%= site.nombre %></title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<% if (locals.fuentesAdmin) { %><link rel="stylesheet" href="<%= fuentesAdmin %>"><% } %>
+<link rel="stylesheet" href="/css/admin.css?v=<%= build %>">
+</head>
+<body>
+<div class="a-layout">
+  <aside class="a-side">
+    <a class="a-brand" href="/admin"><span>FH</span> Panel de gestión</a>
+    <nav>
+      <a class="<%= path === '/' ? 'on' : '' %>" href="/admin">Resumen</a>
+      <p class="a-grupo">Libros</p>
+      <a class="<%= on('/libros') %>" href="/admin/libros">Libros y Amazon</a>
+      <p class="a-grupo">Eventos y YouTube</p>
+      <a class="<%= on('/eventos') %>" href="/admin/eventos">Eventos</a>
+      <a class="<%= on('/en-vivo') %>" href="/admin/en-vivo">En vivo</a>
+      <p class="a-grupo">Redacción</p>
+      <a class="<%= on('/publicaciones') %>" href="/admin/publicaciones">Noticias y curiosidades</a>
+      <% if (rol === 'admin') { %>
+      <p class="a-grupo">Sitio</p>
+      <a class="<%= on('/biografia') %>" href="/admin/biografia">Sobre mí</a>
+      <a class="<%= on('/apariencia') %>" href="/admin/apariencia">Apariencia</a>
+      <% } %>
+      <p class="a-grupo">Otros</p>
+      <a class="<%= on('/mensajes') %>" href="/admin/mensajes">Mensajes</a>
+      <a class="<%= on('/cuenta') %>" href="/admin/cuenta">Mi cuenta</a>
+    </nav>
+    <div class="a-user">
+      <small><%= user.nombre %> · <%= user.rol === 'admin' ? 'Administrador' : 'Editor' %></small>
+      <a href="/" target="_blank" rel="noopener">Ver el sitio ↗</a>
+      <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="a-link" type="submit">Cerrar sesión</button></form>
+    </div>
+  </aside>
+  <main class="a-main">

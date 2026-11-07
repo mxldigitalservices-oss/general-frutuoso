@@ -1,0 +1,35 @@
+<%- include('partials/head', { title: ajustes.textos.tituloEventos, desc: 'Agenda de presentaciones, conferencias y firmas de libros.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap"><p class="eyebrow">Agenda</p><h1><%= ajustes.textos.tituloEventos %></h1></div></section>
+<section class="section"><div class="wrap narrow">
+  <h2 class="sub">Próximos eventos</h2>
+  <% if (proximos.length) { proximos.forEach(e => { %>
+    <article class="evento">
+      <div class="fecha-caja"><strong><%= new Date(e.fecha).getUTCDate() %></strong><span><%= new Date(e.fecha).toLocaleDateString('es-DO', { month: 'short', timeZone: 'UTC' }) %></span></div>
+      <div>
+        <p class="meta"><span class="badge"><%= e.tipo %></span></p>
+        <h3><%= e.titulo %></h3>
+        <p class="muted"><%= fmtFecha(e.fecha) %><%= e.hora ? ' · ' + e.hora : '' %> · <%= e.lugar %><%= e.ciudad ? ', ' + e.ciudad : '' %></p>
+        <% if (e.descripcion) { %><p><%= e.descripcion %></p><% } %>
+        <% if (e.mapa) { %><p><a href="<%= e.mapa %>" target="_blank" rel="noopener noreferrer">Ver ubicación en el mapa</a></p><% } %>
+        <% if (e.videoYoutubeId) { %><%- include('partials/cubrefalta', { id: e.videoYoutubeId, titulo: e.titulo }) %><% } %>
+      </div>
+    </article>
+  <% }) } else { %><p class="vacio">No hay eventos programados por ahora.</p><% } %>
+
+  <% if (pasados.length) { %>
+  <h2 class="sub">Eventos anteriores</h2>
+  <% pasados.forEach(e => { %>
+    <article class="evento pasado">
+      <div class="fecha-caja"><strong><%= new Date(e.fecha).getUTCDate() %></strong><span><%= new Date(e.fecha).toLocaleDateString('es-DO', { month: 'short', year: '2-digit', timeZone: 'UTC' }) %></span></div>
+      <div>
+        <h3><%= e.titulo %></h3>
+        <p class="muted"><%= e.lugar %><%= e.ciudad ? ', ' + e.ciudad : '' %></p>
+        <% if (e.videoYoutubeId) { %><%- include('partials/cubrefalta', { id: e.videoYoutubeId, titulo: e.titulo }) %><% } %>
+      </div>
+    </article>
+  <% }) } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

@@ -1,0 +1,26 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1><%= cfg.plural %></h1><a class="a-btn" href="<%= base %>/nuevo">+ Nuevo <%= cfg.singular %></a></div>
+<%- include('partials/avisos') %>
+<% if (items.length) { %>
+<div class="a-scroll">
+<table class="a-table">
+  <thead><tr><% cfg.columns.forEach(c => { %><th><%= c.label %></th><% }) %><th></th></tr></thead>
+  <tbody>
+  <% items.forEach(it => { %>
+    <tr>
+      <% cfg.columns.forEach(c => { const v = it[c.key]; %>
+        <td><% if (c.type === 'bool') { %><span class="a-pill <%= v ? 'si' : 'no' %>"><%= v ? 'Sí' : 'No' %></span><% } else if (c.type === 'fecha') { %><%= v ? fmtFecha(v) : '—' %><% } else { %><%= v ?? '—' %><% } %></td>
+      <% }) %>
+      <td class="a-acc">
+        <a class="a-btn ghost sm" href="<%= base %>/<%= it._id %>/editar">Editar</a>
+        <form method="post" action="<%= base %>/<%= it._id %>/eliminar" data-confirm="¿Eliminar este elemento? No se puede deshacer.">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="a-btn danger sm" type="submit">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<% } else { %><p class="a-vacio">Todavía no hay elementos. Crea el primero con el botón "Nuevo".</p><% } %>
+<%- include('partials/bottom') %>

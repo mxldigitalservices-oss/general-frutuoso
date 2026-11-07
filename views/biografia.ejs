@@ -1,0 +1,48 @@
+<%- include('partials/head', { title: 'Biografía', desc: bio.tagline, ogImagen: bio.foto }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero">
+  <div class="wrap bio-grid">
+    <% if (bio.foto) { %><img class="bio-foto" src="<%= bio.foto %>" alt="Retrato de <%= bio.nombre %>"><% } %>
+    <div>
+      <p class="eyebrow"><%= bio.titulo %></p>
+      <h1><%= bio.nombre %></h1>
+      <p class="lead"><%= bio.tagline %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow prose">
+    <% (bio.resumen || []).forEach(p => { %><p><%= p %></p><% }) %>
+  </div>
+</section>
+
+<% if ((bio.militar || []).length) { %>
+<section class="section alt">
+  <div class="wrap narrow">
+    <h2 class="section-title">Trayectoria militar y jurídica</h2>
+    <ol class="timeline">
+      <% bio.militar.forEach(h => { %>
+      <li><span class="t-anio"><%= h.anio %></span><div><h3><%= h.titulo %></h3><% if (h.descripcion) { %><p><%= h.descripcion %></p><% } %></div></li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+<% } %>
+
+<% if ((bio.literaria || []).length) { %>
+<section class="section">
+  <div class="wrap narrow">
+    <h2 class="section-title">Trayectoria literaria</h2>
+    <ol class="timeline">
+      <% bio.literaria.forEach(h => { %>
+      <li><span class="t-anio"><%= h.anio %></span><div><h3><%= h.titulo %></h3><% if (h.descripcion) { %><p><%= h.descripcion %></p><% } %></div></li>
+      <% }) %>
+    </ol>
+    <p class="center"><a class="btn" href="/libros">Ver las obras</a></p>
+  </div>
+</section>
+<% } %>
+</main>
+<%- include('partials/footer') %>

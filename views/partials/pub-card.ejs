@@ -1,0 +1,10 @@
+<article class="card pub">
+  <a class="pub-img" href="/noticias/<%= p.slug %>" tabindex="-1" aria-hidden="true">
+    <% if (p.imagen) { %><img src="<%= p.imagen %>" alt="" loading="lazy"><% } else { %><span class="pub-ph">FH</span><% } %>
+  </a>
+  <div class="card-body">
+    <p class="meta"><span class="badge"><%= p.tipo === 'articulo' ? 'Artículo' : 'Noticia' %></span> <%= fmtFecha(p.fecha) %></p>
+    <h3><a href="/noticias/<%= p.slug %>"><%= p.titulo %></a></h3>
+    <p><%= p.resumen %></p>
+  </div>
+</article>

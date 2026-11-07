@@ -1,0 +1,39 @@
+<%- include('partials/top') %>
+<div class="a-head">
+  <h1><%= locals.unico ? cfg.plural : (esNuevo ? 'Nuevo ' : 'Editar ') + cfg.singular %></h1>
+  <% if (!locals.unico) { %><a class="a-btn ghost" href="<%= base %>">← Volver a la lista</a><% } %>
+</div>
+<%- include('partials/avisos') %>
+<form method="post" action="<%= action %>" enctype="multipart/form-data" class="a-form">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <% cfg.fields.forEach(f => { const v = item[f.name]; %>
+    <% if (f.type === 'checkbox') { %>
+      <label class="a-check"><input type="checkbox" name="<%= f.name %>" <%= v ? 'checked' : '' %>> <%= f.label %></label>
+    <% } else { %>
+    <div class="a-field">
+      <label for="f_<%= f.name %>"><%= f.label %><%= f.required ? ' *' : '' %></label>
+      <% if (f.type === 'textarea') { %>
+        <textarea id="f_<%= f.name %>" name="<%= f.name %>" rows="<%= f.rows || 5 %>"><%= v || '' %></textarea>
+      <% } else if (f.type === 'select') { %>
+        <select id="f_<%= f.name %>" name="<%= f.name %>">
+          <% f.options.forEach(o => { %><option value="<%= o.value %>" <%= v === o.value ? 'selected' : '' %>><%= o.label %></option><% }) %>
+        </select>
+      <% } else if (f.type === 'image') { %>
+        <% if (v) { %>
+          <div class="a-actual"><img src="<%= v %>" alt="Imagen actual" width="120"><label class="a-check"><input type="checkbox" name="remove_<%= f.name %>"> Quitar esta imagen</label></div>
+        <% } %>
+        <input id="f_<%= f.name %>" type="file" name="<%= f.name %>" accept="image/jpeg,image/png,image/webp">
+      <% } else if (f.type === 'date') { %>
+        <input id="f_<%= f.name %>" type="date" name="<%= f.name %>" value="<%= v ? new Date(v).toISOString().slice(0, 10) : '' %>">
+      <% } else if (f.type === 'number') { %>
+        <input id="f_<%= f.name %>" type="number" step="any" name="<%= f.name %>" value="<%= v ?? '' %>">
+      <% } else { %>
+        <input id="f_<%= f.name %>" type="<%= f.type === 'url' ? 'url' : 'text' %>" name="<%= f.name %>" value="<%= v || '' %>"<% if (f.max) { %> maxlength="<%= f.max %>"<% } %>>
+      <% } %>
+      <% if (f.help) { %><small><%= f.help %></small><% } %>
+    </div>
+    <% } %>
+  <% }) %>
+  <div class="a-bar"><button class="a-btn" type="submit">Guardar</button><% if (!locals.unico) { %><a class="a-btn ghost" href="<%= base %>">Cancelar</a><% } %></div>
+</form>
+<%- include('partials/bottom') %>

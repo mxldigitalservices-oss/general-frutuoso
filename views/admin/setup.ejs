@@ -1,0 +1,16 @@
+<%- include('partials/min-top', { titulo: 'Crear cuenta' }) %>
+<main class="a-card-solo">
+  <h1>Crea tu cuenta de administrador</h1>
+  <p class="a-muted">Define tu propio correo y contraseña. Esta pantalla solo existe hasta que se crea la primera cuenta.</p>
+  <% if (errors.length) { %><div class="a-alert err" role="alert"><ul><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul></div><% } %>
+  <form method="post" action="/admin/setup" class="a-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="a-field"><label for="token">Código de configuración</label><input id="token" type="password" name="token" required autocomplete="off"><small>Es el valor de SETUP_TOKEN configurado en el servidor.</small></div>
+    <div class="a-field"><label for="nombre">Nombre</label><input id="nombre" type="text" name="nombre" required maxlength="120" value="<%= valores.nombre || '' %>"></div>
+    <div class="a-field"><label for="email">Correo (será tu usuario)</label><input id="email" type="email" name="email" required maxlength="160" value="<%= valores.email || '' %>" autocomplete="username"></div>
+    <div class="a-field"><label for="clave">Contraseña (mínimo 10 caracteres)</label><input id="clave" type="password" name="clave" required minlength="10" maxlength="72" autocomplete="new-password"></div>
+    <div class="a-field"><label for="clave2">Repite la contraseña</label><input id="clave2" type="password" name="clave2" required minlength="10" maxlength="72" autocomplete="new-password"></div>
+    <button class="a-btn" type="submit">Crear cuenta</button>
+  </form>
+</main>
+</body></html>

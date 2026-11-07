@@ -1,0 +1,15 @@
+<%- include('partials/head', { title: 'Libros', desc: 'Obras del General y escritor Juan Manuel Fructuoso Heredia, con enlaces de compra en Amazon.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap">
+  <p class="eyebrow">Catálogo</p>
+  <h1><%= ajustes.textos.tituloLibros %></h1>
+  <p class="lead">Narrativa nacida de más de tres décadas de investigación al servicio de la justicia.</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <% if (libros.length) { %>
+  <div class="grid grid-3"><% libros.forEach(l => { %><%- include('partials/libro-card', { l }) %><% }) %></div>
+  <% } else { %><p class="vacio">Pronto publicaremos las obras aquí.</p><% } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

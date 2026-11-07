@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: 'Noticias', desc: 'Noticias y artículos de Juan Manuel Fructuoso Heredia.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap"><p class="eyebrow">Redacción</p><h1><%= ajustes.textos.tituloNoticias %></h1></div></section>
+<section class="section"><div class="wrap">
+  <% if (items.length) { %>
+  <div class="grid grid-3"><% items.forEach(p => { %><%- include('partials/pub-card', { p }) %><% }) %></div>
+  <%- include('partials/pager', { p, paginas }) %>
+  <% } else { %><p class="vacio">Aún no hay publicaciones.</p><% } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

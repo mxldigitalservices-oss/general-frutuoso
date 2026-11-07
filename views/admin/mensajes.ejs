@@ -1,0 +1,10 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Mensajes de contacto</h1></div>
+<% if (items.length) { items.forEach(m => { %>
+  <article class="a-msg <%= m.leido ? '' : 'nuevo' %>">
+    <header><strong><%= m.nombre %></strong> · <a href="mailto:<%= m.email %>"><%= m.email %></a> <small><%= new Date(m.creado_en).toLocaleString('es-DO') %></small></header>
+    <p><%= m.mensaje %></p>
+    <% if (!m.leido) { %><form method="post" action="/admin/mensajes/<%= m.id %>/leido"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="a-btn ghost sm" type="submit">Marcar como leído</button></form><% } %>
+  </article>
+<% }) } else { %><p class="a-vacio">No hay mensajes todavía.</p><% } %>
+<%- include('partials/bottom') %>

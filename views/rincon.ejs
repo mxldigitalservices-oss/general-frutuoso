@@ -1,0 +1,27 @@
+<%- include('partials/head', { title: ajustes.textos.tituloRincon, desc: 'Preguntas, curiosidades y reflexiones semanales del General Juan Manuel Fructuoso Heredia.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap">
+  <p class="eyebrow">Cada semana</p>
+  <h1><%= ajustes.textos.tituloRincon %></h1>
+  <p class="lead">Una pregunta, un video corto y una reflexión.</p>
+</div></section>
+<section class="section"><div class="wrap narrow">
+  <% if (items.length) { %>
+    <% items.forEach(r => { %>
+    <article class="rincon-item">
+      <p class="meta"><span class="badge"><%= r.tipo === 'reel' ? 'Reel' : 'Curiosidad' %></span> <%= fmtFecha(r.fecha) %></p>
+      <h2 class="pregunta"><%= r.titulo %></h2>
+      <% if (r.videoYoutubeId) { %><%- include('partials/cubrefalta', { id: r.videoYoutubeId, titulo: r.titulo }) %><% } %>
+      <% if (r.imagen && !r.videoYoutubeId) { %><img class="art-img" src="<%= r.imagen %>" alt=""><% } %>
+      <div class="prose">
+        <% const txt = r.contenido ? parrafos(r.contenido) : [r.resumen]; txt.forEach(t => { %><p><%= t %></p><% }) %>
+      </div>
+      <% if (r.enlace) { %><p><a class="btn btn-ghost" href="<%= r.enlace %>" target="_blank" rel="noopener noreferrer"><%= r.enlaceTexto || 'Más información' %></a></p><% } %>
+    </article>
+    <% }) %>
+    <%- include('partials/pager', { p, paginas }) %>
+  <% } else { %><p class="vacio">La primera reflexión llegará muy pronto.</p><% } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

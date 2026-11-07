@@ -1,0 +1,15 @@
+<%- include('partials/head', { title: 'En vivo', desc: ajustes.enVivo.titulo }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap"><p class="eyebrow"><span class="dot" aria-hidden="true"></span> Transmisión</p><h1><%= ajustes.enVivo.titulo %></h1></div></section>
+<section class="section"><div class="wrap narrow">
+  <% if (ajustes.enVivo.youtubeId) { %>
+    <%- include('partials/cubrefalta', { id: ajustes.enVivo.youtubeId, vivo: true, titulo: ajustes.enVivo.titulo }) %>
+  <% } else { %><p class="vacio">La transmisión comenzará pronto.</p><% } %>
+  <% if (proximos.length) { %>
+    <h2 class="sub">Próximos eventos</h2>
+    <% proximos.forEach(e => { %><p><strong><%= e.titulo %></strong> — <%= fmtFecha(e.fecha) %><%= e.hora ? ', ' + e.hora : '' %></p><% }) %>
+  <% } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

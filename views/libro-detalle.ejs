@@ -1,0 +1,22 @@
+<%- include('partials/head', { title: libro.titulo, desc: libro.sinopsis.slice(0, 160), ogImagen: libro.portada }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="section"><div class="wrap libro-det">
+  <img class="libro-portada" src="<%= libro.portada || '/img/portada-placeholder.svg' %>" alt="Portada de <%= libro.titulo %>">
+  <div>
+    <p class="eyebrow"><a href="/libros">← Todas las obras</a></p>
+    <h1><%= libro.titulo %></h1>
+    <% if (libro.subtitulo) { %><p class="lead"><%= libro.subtitulo %></p><% } %>
+    <ul class="ficha">
+      <% if (libro.anio) { %><li><span>Año</span><%= libro.anio %></li><% } %>
+      <% if (libro.genero) { %><li><span>Género</span><%= libro.genero %></li><% } %>
+      <% if (libro.paginas) { %><li><span>Páginas</span><%= libro.paginas %></li><% } %>
+      <% if (libro.precio) { %><li><span>Precio</span><%= libro.precio %></li><% } %>
+    </ul>
+    <h2 class="sub">Sinopsis</h2>
+    <div class="prose"><% parrafos(libro.sinopsis).forEach(p => { %><p><%= p %></p><% }) %></div>
+    <p><a class="btn btn-grande" href="<%= libro.enlaceAmazon || site.amazonAutor %>" target="_blank" rel="noopener noreferrer">Comprar en Amazon</a></p>
+  </div>
+</div></section>
+</main>
+<%- include('partials/footer') %>

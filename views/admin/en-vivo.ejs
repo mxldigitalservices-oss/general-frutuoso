@@ -1,0 +1,22 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>En vivo</h1></div>
+<%- include('partials/avisos') %>
+<p class="a-muted">Pega el enlace de YouTube de la transmisión (puede ser un video en directo o una grabación). El video no se aloja en el servidor: se muestra con el marco institucional del sitio.</p>
+
+<form method="post" action="/admin/en-vivo" class="a-form">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <div class="a-field"><label for="titulo">Título de la transmisión</label><input id="titulo" type="text" name="titulo" maxlength="120" value="<%= aj.enVivo.titulo %>"></div>
+  <div class="a-field"><label for="url">Enlace de YouTube</label><input id="url" type="url" name="url" maxlength="300" value="<%= aj.enVivo.url %>" placeholder="https://www.youtube.com/watch?v=..."></div>
+  <% if (aj.enVivo.youtubeId) { %><div class="a-actual"><img src="https://i.ytimg.com/vi/<%= aj.enVivo.youtubeId %>/mqdefault.jpg" alt="Vista previa del video" width="200"></div><% } %>
+  <div class="a-bar"><button class="a-btn" type="submit">Guardar transmisión</button></div>
+</form>
+
+<% if (user.rol === 'admin') { %>
+<h2>Mostrar en el sitio</h2>
+<form class="a-switch" method="post" action="/admin/interruptor/enVivo">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="volver" value="en-vivo">
+  <button type="submit" class="a-toggle <%= aj.interruptores.enVivo ? 'on' : '' %>" role="switch" aria-checked="<%= aj.interruptores.enVivo %>" aria-label="Sección En vivo"><span></span></button>
+  <div><strong>Sección En vivo: <%= aj.interruptores.enVivo ? 'ACTIVADA' : 'DESACTIVADA' %></strong><small>Al activarla aparece en el inicio, en el menú y en /en-vivo.</small></div>
+</form>
+<% } %>
+<%- include('partials/bottom') %>
