@@ -9,14 +9,15 @@
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Abrir o cerrar el menú">
     <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span></label>
     <nav class="nav" aria-label="Principal">
-      <a class="<%= on('/') %>" href="/">Inicio</a>
-      <a class="<%= on('/biografia') %>" href="/biografia">Biografía</a>
-      <a class="<%= on('/libros') %>" href="/libros">Libros</a>
-      <a class="<%= on('/rincon-del-general') %>" href="/rincon-del-general"><%= ajustes.textos.tituloRincon %></a>
-      <a class="<%= on('/noticias') %>" href="/noticias">Noticias</a>
-      <% if (ajustes.interruptores.eventos) { %><a class="<%= on('/eventos') %>" href="/eventos">Eventos</a><% } %>
-      <% if (ajustes.interruptores.enVivo) { %><a class="nav-vivo <%= on('/en-vivo') %>" href="/en-vivo"><span class="dot" aria-hidden="true"></span>En vivo</a><% } %>
-      <a class="<%= on('/contacto') %>" href="/contacto">Contacto</a>
+      <a class="<%= on('/') %>" href="/"><%= ajustes.menu.inicio %></a>
+      <a class="<%= on('/biografia') %>" href="/biografia"><%= ajustes.menu.biografia %></a>
+      <a class="<%= on('/libros') %>" href="/libros"><%= ajustes.menu.libros %></a>
+      <a class="<%= on('/rincon-del-general') %>" href="/rincon-del-general"><%= ajustes.menu.rincon %></a>
+      <a class="<%= on('/noticias') %>" href="/noticias"><%= ajustes.menu.noticias %></a>
+      <% if (hayPrensa) { %><a class="<%= on('/prensa') %>" href="/prensa"><%= ajustes.menu.prensa %></a><% } %>
+      <% if (ajustes.interruptores.eventos) { %><a class="<%= on('/eventos') %>" href="/eventos"><%= ajustes.menu.eventos %></a><% } %>
+      <% if (ajustes.interruptores.enVivo) { %><a class="nav-vivo <%= on('/en-vivo') %>" href="/en-vivo"><span class="dot" aria-hidden="true"></span><%= ajustes.menu.enVivo %></a><% } %>
+      <a class="<%= on('/contacto') %>" href="/contacto"><%= ajustes.menu.contacto %></a>
     </nav>
   </div>
 </header>

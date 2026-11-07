@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { query } = require('../../config/postgres');
 
@@ -41,4 +42,31 @@ exports.actualizarCuenta = async (id, { nombre, email, clave }) => {
   } else {
     await query('UPDATE usuarios SET nombre = $1, email = $2 WHERE id = $3', [nombre, String(email).toLowerCase(), id]);
   }
+};
+
+// ── Restablecimiento de contraseña ──
+const sha256 = (t) => crypto.createHash('sha256').update(t).digest('hex');
+
+// Crea un enlace de un solo uso (30 min). Devuelve null si el correo no existe.
+exports.crearRestablecimiento = async (email) => {
+  const u = await exports.buscarPorEmail(email);
+  if (!u) return null;
+  await query('UPDATE restablecimientos SET usado = TRUE WHERE usuario_id = $1 AND usado = FALSE', [u.id]);
+  await query("DELETE FROM restablecimientos WHERE expira < NOW() - INTERVAL '1 day'");
+  const token = crypto.randomBytes(32).toString('hex');
+  await query("INSERT INTO restablecimientos (usuario_id, token_hash, expira) VALUES ($1, $2, NOW() + INTERVAL '30 minutes')", [u.id, sha256(token)]);
+  return { token, nombre: u.nombre, email: u.email };
+};
+
+exports.restablecimientoValido = async (token) =>
+  (await query('SELECT 1 FROM restablecimientos WHERE token_hash = $1 AND usado = FALSE AND expira > NOW()', [sha256(token)])).rowCount > 0;
+
+// Gasta el enlace de forma atómica (no puede usarse dos veces) y cambia la contraseña.
+exports.consumirRestablecimiento = async (token, clave) => {
+  const r = await query('UPDATE restablecimientos SET usado = TRUE WHERE token_hash = $1 AND usado = FALSE AND expira > NOW() RETURNING usuario_id', [sha256(token)]);
+  if (!r.rowCount) return null;
+  const id = r.rows[0].usuario_id;
+  await query('UPDATE usuarios SET password_hash = $1 WHERE id = $2', [await exports.hashear(clave), id]);
+  await query('UPDATE restablecimientos SET usado = TRUE WHERE usuario_id = $1', [id]);
+  return id;
 };

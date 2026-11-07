@@ -21,6 +21,7 @@ const TIPOS_EVENTO = ['Presentación de libro', 'Conferencia', 'Firma de libros'
 const TIPOS_PUB = [
   { value: 'noticia', label: 'Noticia' },
   { value: 'articulo', label: 'Artículo' },
+  { value: 'prensa', label: 'Prensa y reseñas (enlace a un periódico o medio)' },
   { value: 'curiosidad', label: 'Curiosidad / pregunta de la semana (El Rincón del General)' },
   { value: 'reel', label: 'Reel o video corto (El Rincón del General)' }
 ];
@@ -82,19 +83,25 @@ const publicaciones = {
   ],
   fields: [
     { name: 'tipo', label: 'Tipo de publicación', type: 'select', options: TIPOS_PUB },
+    { name: 'medio', label: 'Nombre del medio (ej. Listín Diario) — obligatorio en Prensa y reseñas', type: 'text', max: 80 },
     { name: 'titulo', label: 'Título (en una curiosidad, es la pregunta de la semana)', type: 'text', required: true, max: 200 },
     { name: 'resumen', label: 'Resumen corto (se ve en las tarjetas)', type: 'textarea', rows: 3, required: true, max: 400 },
     { name: 'contenido', label: 'Texto completo o reflexión (separa párrafos con una línea en blanco)', type: 'textarea', rows: 12, max: 20000 },
-    { name: 'imagen', label: 'Imagen (JPG, PNG o WEBP, máx. 3 MB)', type: 'image' },
+    { name: 'imagen', label: 'Imagen o fotografía ilustrativa (JPG, PNG o WEBP, máx. 3 MB)', type: 'image' },
     { name: 'videoUrl', label: 'Enlace de YouTube o Shorts (opcional)', type: 'url' },
-    { name: 'enlace', label: 'Enlace externo (opcional)', type: 'url' },
-    { name: 'enlaceTexto', label: 'Texto del enlace externo (ej. "Leer en Diario Libre")', type: 'text', max: 60 },
+    { name: 'enlace', label: 'Enlace externo a la nota del periódico o medio (obligatorio en Prensa y reseñas)', type: 'url' },
+    { name: 'enlaceTexto', label: 'Texto del botón del enlace (opcional, ej. "Leer la nota completa")', type: 'text', max: 60 },
     { name: 'fecha', label: 'Fecha de publicación', type: 'date' },
     { name: 'publicado', label: 'Publicado (visible en el sitio)', type: 'checkbox' }
   ],
   beforeSave: (data, errors) => {
     procesarVideo(data, errors);
     if ((data.tipo === 'noticia' || data.tipo === 'articulo') && !data.contenido) errors.push('El texto completo es obligatorio en noticias y artículos');
+    if (data.tipo === 'prensa') {
+      if (!data.enlace) errors.push('En Prensa y reseñas el enlace a la nota es obligatorio');
+      if (!data.medio) errors.push('En Prensa y reseñas el nombre del medio es obligatorio');
+    }
+    if (data.tipo !== 'prensa') data.medio = '';
     if (data.tipo === 'reel' && !data.videoUrl) errors.push('Un reel necesita el enlace de YouTube');
     if (!data.fecha) data.fecha = new Date();
   }

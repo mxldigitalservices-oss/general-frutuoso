@@ -8,8 +8,9 @@ const cache = require('../utils/cache');
 
 const TEXTOS = {
   heroEyebrow: 80, heroTitulo: 120, heroSubtitulo: 300, tituloLibros: 80, tituloRincon: 80,
-  tituloNoticias: 80, tituloEventos: 80, piePagina: 200
+  tituloNoticias: 80, tituloEventos: 80, tituloPrensa: 80, tituloMilitar: 80, tituloLiteraria: 80, piePagina: 200
 };
+const MENU = ['inicio', 'biografia', 'libros', 'rincon', 'noticias', 'prensa', 'eventos', 'enVivo', 'contacto'];
 const MODOS = ['ninguno', 'marco', 'franja'];
 const texto = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
@@ -33,6 +34,9 @@ exports.guardar = async (req, res, next) => {
     const textos = {};
     for (const [k, max] of Object.entries(TEXTOS)) textos[k] = texto(b['t_' + k], max);
 
+    const menu = {};
+    for (const k of MENU) menu[k] = texto(b['m_' + k], 30);
+
     const temaNuevo = {};
     for (const k of ['fondo', 'superficie', 'texto', 'acento']) {
       const v = texto(b['c_' + k], 7);
@@ -52,7 +56,7 @@ exports.guardar = async (req, res, next) => {
     if (archivo) { const e = imagenes.validar(archivo); if (e) errors.push(`Logo: ${e}`); }
 
     if (errors.length) {
-      const aj = { ...actual, textos: { ...actual.textos, ...textos }, tema: { ...actual.tema, ...temaNuevo }, tipografia, cubrefalta: { ...actual.cubrefalta, ...cubrefalta } };
+      const aj = { ...actual, textos: { ...actual.textos, ...textos }, menu: { ...actual.menu, ...menu }, tema: { ...actual.tema, ...temaNuevo }, tipografia, cubrefalta: { ...actual.cubrefalta, ...cubrefalta } };
       return res.status(422).render('admin/apariencia', { titulo: 'Apariencia', aj, fuentes: tema.FUENTES, paletas: tema.PALETAS, fuentesAdmin: tema.urlFuentes(tema.FUENTES.map((f) => f.id)), errors, ok: null });
     }
 
@@ -69,12 +73,12 @@ exports.guardar = async (req, res, next) => {
     }
 
     try {
-      await Ajuste.updateOne({ clave: 'sitio' }, { $set: { textos, tema: temaNuevo, tipografia, cubrefalta } }, { upsert: true });
+      await Ajuste.updateOne({ clave: 'sitio' }, { $set: { textos, menu, tema: temaNuevo, tipografia, cubrefalta } }, { upsert: true });
     } catch (e) { await imagenes.eliminar(creadas); throw e; }
 
     await imagenes.eliminar(reemplazar);
     await cache.invalidate();
-    await Auditoria.registrar(req.session.user.id, 'editar', 'apariencia', null, 'Textos, colores, tipografía y cubrefalta');
+    await Auditoria.registrar(req.session.user.id, 'editar', 'apariencia', null, 'Textos, menú, colores, tipografía y cubrefalta');
     res.redirect('/admin/apariencia?ok=' + encodeURIComponent('Apariencia guardada'));
   } catch (e) { next(e); }
 };

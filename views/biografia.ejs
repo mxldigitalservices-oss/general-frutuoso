@@ -1,4 +1,4 @@
-<%- include('partials/head', { title: 'Biografía', desc: bio.tagline, ogImagen: bio.foto }) %>
+<%- include('partials/head', { title: ajustes.menu.biografia, desc: bio.tagline, ogImagen: bio.foto }) %>
 <%- include('partials/header') %>
 <main id="contenido">
 <section class="page-hero">
@@ -21,7 +21,7 @@
 <% if ((bio.militar || []).length) { %>
 <section class="section alt">
   <div class="wrap narrow">
-    <h2 class="section-title">Trayectoria militar y jurídica</h2>
+    <h2 class="section-title"><%= ajustes.textos.tituloMilitar %></h2>
     <ol class="timeline">
       <% bio.militar.forEach(h => { %>
       <li><span class="t-anio"><%= h.anio %></span><div><h3><%= h.titulo %></h3><% if (h.descripcion) { %><p><%= h.descripcion %></p><% } %></div></li>
@@ -34,7 +34,7 @@
 <% if ((bio.literaria || []).length) { %>
 <section class="section">
   <div class="wrap narrow">
-    <h2 class="section-title">Trayectoria literaria</h2>
+    <h2 class="section-title"><%= ajustes.textos.tituloLiteraria %></h2>
     <ol class="timeline">
       <% bio.literaria.forEach(h => { %>
       <li><span class="t-anio"><%= h.anio %></span><div><h3><%= h.titulo %></h3><% if (h.descripcion) { %><p><%= h.descripcion %></p><% } %></div></li>

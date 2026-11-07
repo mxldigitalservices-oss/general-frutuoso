@@ -1,0 +1,15 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Subir video</h1><a class="a-btn ghost" href="/admin/videos">← Volver a los videos</a></div>
+<%- include('partials/avisos') %>
+<form id="form-video" method="post" action="/admin/videos/nuevo" enctype="multipart/form-data" class="a-form">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <div class="a-field"><label for="titulo">Título *</label><input id="titulo" type="text" name="titulo" required maxlength="160" value="<%= valores.titulo || '' %>"></div>
+  <div class="a-field"><label for="nota">Nota (opcional)</label><textarea id="nota" name="nota" rows="3" maxlength="500"><%= valores.nota || '' %></textarea></div>
+  <div class="a-field">
+    <label for="video">Archivo de video *</label>
+    <input id="video" type="file" name="video" required accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm">
+    <small>MP4, MOV o WebM, hasta 100 MB. Un video vertical de un minuto suele pesar entre 20 y 60 MB. La subida puede tardar: no cierres la página.</small>
+  </div>
+  <div class="a-bar"><button class="a-btn" type="submit">Subir video</button><a class="a-btn ghost" href="/admin/videos">Cancelar</a></div>
+</form>
+<%- include('partials/bottom') %>

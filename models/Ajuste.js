@@ -6,7 +6,12 @@ const ajusteSchema = new mongoose.Schema({
   textos: {
     heroEyebrow: String, heroTitulo: String, heroSubtitulo: String,
     tituloLibros: String, tituloRincon: String, tituloNoticias: String, tituloEventos: String,
+    tituloPrensa: String, tituloMilitar: String, tituloLiteraria: String,
     piePagina: String
+  },
+  menu: {
+    inicio: String, biografia: String, libros: String, rincon: String, noticias: String,
+    prensa: String, eventos: String, enVivo: String, contacto: String
   },
   tema: { fondo: String, superficie: String, texto: String, acento: String },
   tipografia: { titulos: String, cuerpo: String },

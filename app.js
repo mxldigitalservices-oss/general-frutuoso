@@ -7,6 +7,8 @@ const defaults = require('./config/defaults');
 const sessionCfg = require('./config/session');
 const ajustesSvc = require('./utils/ajustes');
 const tema = require('./utils/tema');
+const cache = require('./utils/cache');
+const Publicacion = require('./models/Publicacion');
 const { media } = require('./controllers/mediaController');
 
 function aplicarAjustes(res, aj) {
@@ -65,6 +67,7 @@ function crearApp() {
     res.locals.build = env.BUILD;
     res.locals.fmtFecha = (d) => new Date(d).toLocaleDateString('es-DO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
     res.locals.parrafos = (t) => String(t || '').split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+    res.locals.hayPrensa = false;
     aplicarAjustes(res, defaults.ajustes);
     next();
   });
@@ -74,7 +77,14 @@ function crearApp() {
 
   // Sitio público: ajustes (textos, colores, interruptores) con caché en Redis.
   app.use(async (req, res, next) => {
-    try { aplicarAjustes(res, await ajustesSvc.obtener()); } catch (e) { /* se usan los valores por defecto */ }
+    try {
+      const [aj, hayPrensa] = await Promise.all([
+        ajustesSvc.obtener(),
+        cache.wrapSafe('hayPrensa', 300, async () => !!(await Publicacion.exists({ publicado: true, tipo: 'prensa' })), false)
+      ]);
+      aplicarAjustes(res, aj);
+      res.locals.hayPrensa = hayPrensa;
+    } catch (e) { /* se usan los valores por defecto */ }
     next();
   });
   app.use('/', require('./routes/public'));

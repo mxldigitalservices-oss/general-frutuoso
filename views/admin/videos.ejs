@@ -1,0 +1,25 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Videos para Reels</h1><a class="a-btn" href="/admin/videos/nuevo">+ Subir video</a></div>
+<%- include('partials/avisos') %>
+<p class="a-muted">Biblioteca privada: estos videos solo se ven aquí, en el panel. Pulsa <strong>Descargar</strong> para bajar el archivo y subirlo a Reels de Instagram o Facebook, o a YouTube Shorts. Para mostrar un video en el sitio público usa su enlace de YouTube.</p>
+<% if (items.length) { %>
+<div class="a-videos">
+  <% items.forEach(v => { %>
+  <article class="a-video">
+    <video controls preload="none" playsinline src="/admin/videos/<%= v._id %>/ver"></video>
+    <div class="a-video-info">
+      <h3><%= v.titulo %></h3>
+      <p><%= (v.size / 1048576).toFixed(1) %> MB · <%= v.mime.replace('video/', '').toUpperCase() %> · <%= fmtFecha(v.createdAt) %></p>
+      <% if (v.nota) { %><p><%= v.nota %></p><% } %>
+      <div class="a-video-acc">
+        <a class="a-btn sm" href="/admin/videos/<%= v._id %>/descargar" download>⬇ Descargar</a>
+        <form method="post" action="/admin/videos/<%= v._id %>/eliminar" data-confirm="¿Eliminar este video? No se puede deshacer.">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="a-btn danger sm" type="submit">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </article>
+  <% }) %>
+</div>
+<% } else { %><p class="a-vacio">Todavía no hay videos. Sube el primero con el botón "Subir video".</p><% } %>
+<%- include('partials/bottom') %>

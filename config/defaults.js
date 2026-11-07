@@ -9,7 +9,14 @@ module.exports = {
       tituloRincon: 'El Rincón del General',
       tituloNoticias: 'Noticias y artículos',
       tituloEventos: 'Eventos',
+      tituloPrensa: 'En la prensa',
+      tituloMilitar: 'Trayectoria militar y jurídica',
+      tituloLiteraria: 'Trayectoria literaria',
       piePagina: '© Juan Manuel Fructuoso Heredia. Todos los derechos reservados.'
+    },
+    menu: {
+      inicio: 'Inicio', biografia: 'Biografía', libros: 'Libros', rincon: 'Rincón del General', noticias: 'Noticias',
+      prensa: 'Prensa', eventos: 'Eventos', enVivo: 'En vivo', contacto: 'Contacto'
     },
     tema: { fondo: '#0b0e14', superficie: '#151b28', texto: '#f3ecd8', acento: '#c9a84c' },
     tipografia: { titulos: 'playfair', cuerpo: 'inter' },

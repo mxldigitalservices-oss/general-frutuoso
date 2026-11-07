@@ -3,7 +3,8 @@ const slugPlugin = require('./slugPlugin');
 
 // Noticias, artículos, curiosidades (El Rincón del General) y reels de YouTube.
 const publicacionSchema = new mongoose.Schema({
-  tipo: { type: String, enum: ['noticia', 'articulo', 'curiosidad', 'reel'], default: 'noticia' },
+  tipo: { type: String, enum: ['noticia', 'articulo', 'prensa', 'curiosidad', 'reel'], default: 'noticia' },
+  medio: { type: String, trim: true, maxlength: 80, default: '' },   // periódico o medio (solo tipo prensa)
   titulo: { type: String, required: [true, 'El título es obligatorio'], trim: true, maxlength: 200 },
   resumen: { type: String, required: [true, 'El resumen es obligatorio'], trim: true, maxlength: 400 },
   contenido: { type: String, trim: true, maxlength: 20000, default: '' },

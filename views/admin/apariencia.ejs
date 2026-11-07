@@ -17,9 +17,19 @@
   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
   <fieldset><legend>Títulos y textos principales</legend>
-    <% [['heroEyebrow', 'Línea superior (cargos)'], ['heroTitulo', 'Título principal del inicio'], ['heroSubtitulo', 'Frase de presentación'], ['tituloLibros', 'Título de la sección de libros'], ['tituloRincon', 'Título de El Rincón del General'], ['tituloNoticias', 'Título de noticias y artículos'], ['tituloEventos', 'Título de eventos'], ['piePagina', 'Texto del pie de página']].forEach(t => { %>
+    <% [['heroEyebrow', 'Línea superior (cargos)'], ['heroTitulo', 'Título principal del inicio'], ['heroSubtitulo', 'Frase de presentación'], ['tituloLibros', 'Título de la sección de libros'], ['tituloRincon', 'Título de El Rincón del General'], ['tituloNoticias', 'Título de noticias y artículos'], ['tituloEventos', 'Título de eventos'], ['tituloPrensa', 'Título de la sección de prensa'], ['tituloMilitar', 'Título de la trayectoria militar (Sobre mí)'], ['tituloLiteraria', 'Título de la trayectoria literaria (Sobre mí)'], ['piePagina', 'Texto del pie de página']].forEach(t => { %>
       <div class="a-field"><label for="t_<%= t[0] %>"><%= t[1] %></label><input id="t_<%= t[0] %>" type="text" name="t_<%= t[0] %>" maxlength="300" value="<%= aj.textos[t[0]] %>"></div>
     <% }) %>
+  </fieldset>
+
+  <fieldset><legend>Nombres del menú de navegación</legend>
+    <p class="a-muted">Cambia cómo se llama cada sección en el menú de arriba del sitio (por ejemplo, "Biografía" → "Sobre mí"). Déjalo vacío para volver al nombre original.</p>
+    <div class="a-colores">
+      <% [['inicio', 'Inicio'], ['biografia', 'Biografía'], ['libros', 'Libros'], ['rincon', 'Rincón del General'], ['noticias', 'Noticias'], ['prensa', 'Prensa'], ['eventos', 'Eventos'], ['enVivo', 'En vivo'], ['contacto', 'Contacto']].forEach(m => { %>
+        <div class="a-field"><label for="m_<%= m[0] %>"><%= m[1] %></label><input id="m_<%= m[0] %>" type="text" name="m_<%= m[0] %>" maxlength="30" value="<%= aj.menu[m[0]] %>"></div>
+      <% }) %>
+    </div>
+    <small>Prensa solo aparece en el menú cuando hay al menos una nota publicada; Eventos y En vivo, cuando su interruptor está activado.</small>
   </fieldset>
 
   <fieldset><legend>Paleta de colores</legend>

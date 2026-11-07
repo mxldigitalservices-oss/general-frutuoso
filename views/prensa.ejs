@@ -1,0 +1,16 @@
+<%- include('partials/head', { title: ajustes.menu.prensa, desc: 'Lo que dicen los medios sobre el General Juan Manuel Fructuoso Heredia y sus obras.' }) %>
+<%- include('partials/header') %>
+<main id="contenido">
+<section class="page-hero"><div class="wrap">
+  <p class="eyebrow">Medios y reseñas</p>
+  <h1><%= ajustes.textos.tituloPrensa %></h1>
+  <p class="lead">Notas de periódicos y medios sobre el General y sus obras. Cada enlace lleva al sitio original del medio.</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <% if (items.length) { %>
+  <div class="grid grid-3"><% items.forEach(p => { %><%- include('partials/prensa-card', { p }) %><% }) %></div>
+  <%- include('partials/pager', { p, paginas }) %>
+  <% } else { %><p class="vacio">Pronto publicaremos aquí las notas de prensa.</p><% } %>
+</div></section>
+</main>
+<%- include('partials/footer') %>

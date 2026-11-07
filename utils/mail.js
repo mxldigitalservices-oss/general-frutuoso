@@ -12,6 +12,8 @@ function getTransporter() {
   return transporter;
 }
 
+exports.configurado = () => !!(env.GMAIL_USER && env.GMAIL_PASS);
+
 // Devuelve true si se envió; false si el correo no está configurado.
 exports.notificarContacto = async ({ nombre, email, mensaje }) => {
   if (!configurado()) return false;
@@ -23,4 +25,15 @@ exports.notificarContacto = async ({ nombre, email, mensaje }) => {
     html: `<p><b>Nombre:</b> ${escapeHtml(nombre)}</p><p><b>Correo:</b> ${escapeHtml(email)}</p><p><b>Mensaje:</b></p><p>${escapeHtml(mensaje).replace(/\n/g, '<br>')}</p>`
   });
   return true;
+};
+
+// Enlace para crear una nueva contraseña (la URL se construye en el servidor con un código aleatorio).
+exports.enviarRestablecimiento = async ({ nombre, email, url }) => {
+  await getTransporter().sendMail({
+    from: `"Portal Fructuoso Heredia" <${env.GMAIL_USER}>`,
+    to: email,
+    subject: 'Restablecer tu contraseña del panel',
+    text: `Hola ${nombre},\n\nRecibimos una solicitud para restablecer tu contraseña del panel. Usa este enlace (válido 30 minutos y de un solo uso):\n${url}\n\nSi no lo solicitaste, ignora este mensaje: tu contraseña no cambia.`,
+    html: `<p>Hola ${escapeHtml(nombre)},</p><p>Recibimos una solicitud para restablecer tu contraseña del panel. El enlace es válido por 30 minutos y solo funciona una vez:</p><p><a href="${escapeHtml(url)}">Crear una nueva contraseña</a></p><p>Si no lo solicitaste, ignora este mensaje: tu contraseña no cambia.</p>`
+  });
 };

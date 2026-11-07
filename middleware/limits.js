@@ -11,3 +11,8 @@ exports.contactLimiter = rateLimit({
   ...base, windowMs: 60 * 60 * 1000, limit: 5,
   handler: (req, res) => res.status(429).render('contacto', { error: 'Has enviado varios mensajes. Inténtalo de nuevo más tarde.', enviado: false, valores: {} })
 });
+
+exports.resetLimiter = rateLimit({
+  ...base, windowMs: 60 * 60 * 1000, limit: 5,
+  handler: (req, res) => res.status(429).render('admin/olvide', { enviado: false, error: 'Demasiadas solicitudes. Inténtalo de nuevo en una hora.', correoActivo: true })
+});

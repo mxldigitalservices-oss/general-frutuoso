@@ -1,0 +1,18 @@
+<%- include('partials/min-top', { titulo: 'Nueva contraseña' }) %>
+<main class="a-card-solo">
+  <h1>Nueva contraseña</h1>
+  <% if (!valido) { %>
+    <div class="a-alert err" role="alert">Este enlace no es válido o ya venció. Los enlaces duran 30 minutos y solo se pueden usar una vez.</div>
+    <p class="a-center"><a class="a-btn" href="/admin/olvide">Pedir un enlace nuevo</a></p>
+  <% } else { %>
+    <% if (errors.length) { %><div class="a-alert err" role="alert"><ul><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul></div><% } %>
+    <p class="a-muted">Escribe tu nueva contraseña (mínimo 10 caracteres). Usa el ojito para comprobar que la escribiste bien.</p>
+    <form method="post" action="/admin/restablecer/<%= token %>" class="a-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="a-field"><label for="clave">Nueva contraseña</label><input id="clave" type="password" name="clave" required minlength="10" maxlength="72" autocomplete="new-password" autofocus></div>
+      <div class="a-field"><label for="clave2">Repite la contraseña</label><input id="clave2" type="password" name="clave2" required minlength="10" maxlength="72" autocomplete="new-password"></div>
+      <button class="a-btn" type="submit">Guardar contraseña</button>
+    </form>
+  <% } %>
+</main>
+<%- include('partials/min-bottom') %>

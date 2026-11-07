@@ -4,7 +4,7 @@ const admin = require('../../controllers/adminController');
 const { requireAuth, requireRole } = require('../../middleware/auth');
 const csrf = require('../../middleware/csrf');
 const { parseMultipart } = require('../../middleware/upload');
-const { loginLimiter } = require('../../middleware/limits');
+const { loginLimiter, resetLimiter } = require('../../middleware/limits');
 
 // Orden importante: multer lee los formularios multipart ANTES de validar el token CSRF.
 router.use(parseMultipart, csrf);
@@ -12,6 +12,10 @@ router.use(parseMultipart, csrf);
 // Acceso (público)
 router.get('/login', auth.loginForm);
 router.post('/login', loginLimiter, auth.login);
+router.get('/olvide', auth.olvideForm);
+router.post('/olvide', resetLimiter, auth.olvide);
+router.get('/restablecer/:token', auth.restablecerForm);
+router.post('/restablecer/:token', loginLimiter, auth.restablecer);
 router.get('/setup', auth.setupForm);
 router.post('/setup', loginLimiter, auth.setup);
 
@@ -28,6 +32,7 @@ router.use('/libros', require('./libros'));
 router.use('/eventos', require('./eventos'));
 router.use('/en-vivo', require('./enVivo'));
 router.use('/publicaciones', require('./publicaciones'));
+router.use('/videos', require('./videos'));
 router.use('/biografia', require('./biografia'));
 router.use('/apariencia', require('./apariencia'));
 router.use('/cuenta', require('./cuenta'));

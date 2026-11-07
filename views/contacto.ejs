@@ -1,7 +1,7 @@
-<%- include('partials/head', { title: 'Contacto', desc: 'Escríbele a Juan Manuel Fructuoso Heredia.' }) %>
+<%- include('partials/head', { title: ajustes.menu.contacto, desc: 'Escríbele a Juan Manuel Fructuoso Heredia.' }) %>
 <%- include('partials/header') %>
 <main id="contenido">
-<section class="page-hero"><div class="wrap"><p class="eyebrow">Escríbenos</p><h1>Contacto</h1></div></section>
+<section class="page-hero"><div class="wrap"><p class="eyebrow">Escríbenos</p><h1><%= ajustes.menu.contacto %></h1></div></section>
 <section class="section"><div class="wrap narrow contacto-grid">
   <div>
     <% if (enviado) { %><div class="alert ok" role="status">¡Gracias! Tu mensaje fue enviado.</div><% } %>

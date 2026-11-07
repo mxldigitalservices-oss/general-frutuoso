@@ -1,0 +1,11 @@
+<article class="card prensa">
+  <a class="pub-img" href="<%= p.enlace %>" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+    <% if (p.imagen) { %><img src="<%= p.imagen %>" alt="" loading="lazy"><% } else { %><span class="pub-ph"><%= (p.medio || 'FH').slice(0, 2).toUpperCase() %></span><% } %>
+  </a>
+  <div class="card-body">
+    <p class="meta"><span class="badge"><%= p.medio %></span> <%= fmtFecha(p.fecha) %></p>
+    <h3><a href="<%= p.enlace %>" target="_blank" rel="noopener noreferrer"><%= p.titulo %></a></h3>
+    <p><%= p.resumen %></p>
+    <div class="actions"><a class="btn btn-ghost" href="<%= p.enlace %>" target="_blank" rel="noopener noreferrer"><%= p.enlaceTexto || ('Leer en ' + p.medio) %> ↗</a></div>
+  </div>
+</article>

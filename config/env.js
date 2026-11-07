@@ -14,6 +14,7 @@ const env = {
   // Dominio oficial: cuando lo tengas, solo cambia estas dos variables en Railway.
   SITE_URL: (process.env.SITE_URL || '').replace(/\/+$/, ''),
   CANONICAL_HOST: (process.env.CANONICAL_HOST || '').toLowerCase().trim(),
+  PUBLIC_URL: '',
   SESSION_SECRET: process.env.SESSION_SECRET || '',
   COOKIE_SECURE: flag(process.env.COOKIE_SECURE, isProd),
   SETUP_TOKEN: process.env.SETUP_TOKEN || '',
@@ -27,6 +28,11 @@ const env = {
   WHATSAPP: (process.env.WHATSAPP || '18093041128').replace(/\D/g, ''),
   STRICT_BOOT: flag(process.env.STRICT_BOOT, isProd)
 };
+
+// Base de los enlaces enviados por correo. Nunca se toma del encabezado Host (se puede falsificar).
+env.PUBLIC_URL = env.SITE_URL
+  || (env.CANONICAL_HOST ? `https://${env.CANONICAL_HOST}` : '')
+  || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '');
 
 if (!env.SESSION_SECRET) {
   if (isProd) throw new Error('SESSION_SECRET es obligatorio en producción');

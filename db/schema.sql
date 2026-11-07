@@ -31,3 +31,13 @@ CREATE TABLE IF NOT EXISTS auditoria (
   creado_en  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_auditoria_fecha ON auditoria (creado_en DESC);
+
+-- Enlaces de restablecimiento de contraseña: se guarda solo el hash del código, válidos 30 min y de un solo uso
+CREATE TABLE IF NOT EXISTS restablecimientos (
+  id         SERIAL PRIMARY KEY,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  expira     TIMESTAMPTZ NOT NULL,
+  usado      BOOLEAN NOT NULL DEFAULT FALSE,
+  creado_en  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

@@ -80,6 +80,15 @@ legend{padding:0 .4rem}
 .a-fuente:has(input:checked){border-color:#c9a84c;box-shadow:0 0 0 2px #c9a84c55}
 .a-fuente small{display:block;font-size:.78rem;color:#5d6272;font-weight:400}.a-fuente span{font-size:1.05rem;font-weight:600}
 
+/* Ojito de contraseña */
+.a-pass{position:relative;display:block}
+.a-pass input{padding-right:3rem !important}
+.a-ojo{position:absolute;right:.35rem;top:50%;transform:translateY(-50%);background:none;border:0;padding:.45rem;cursor:pointer;color:#5d6272;border-radius:6px;display:grid;place-items:center}
+.a-ojo:hover{color:#7a5d12;background:#f3efe0}
+.a-ojo:focus-visible{outline:2px solid #c9a84c}
+.a-ok{color:#23703f !important;font-weight:600}.a-mal{color:#b3262b !important;font-weight:600}
+.a-center{text-align:center;margin:.2rem 0 0}
+
 /* Pantallas de acceso */
 .a-solo{display:grid;place-items:center;min-height:100vh;background:#0b0e14;padding:1rem}
 .a-card-solo{background:#fff;width:min(440px,100%);padding:2rem;border-radius:12px;border-top:4px solid #c9a84c}
@@ -90,3 +99,11 @@ legend{padding:0 .4rem}
   .a-side{position:static;height:auto}
   .a-preview-wrap{position:static}
 }
+
+/* Biblioteca de videos */
+.a-videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.a-video{background:#fff;border:1px solid #d6d2c4;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.a-video video{width:100%;aspect-ratio:16/9;background:#000;display:block}
+.a-video-info{padding:.9rem 1rem 1rem;display:grid;gap:.4rem;flex:1}
+.a-video-info h3{margin:0;font-size:1rem}.a-video-info p{margin:0;color:#5d6272;font-size:.88rem}
+.a-video-acc{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}.a-video-acc form{margin:0}

@@ -147,3 +147,7 @@ p{margin:0 0 1em}
   .timeline li{grid-template-columns:1fr;gap:.2rem}
 }
 @media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
+
+/* Prensa y reseñas */
+.card.prensa{border-left:3px solid var(--accent)}
+.card.prensa h3 a{color:var(--text)}

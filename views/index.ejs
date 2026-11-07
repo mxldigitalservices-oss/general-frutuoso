@@ -42,8 +42,20 @@
 </section>
 <% } %>
 
-<% if (rincon) { %>
+<% if (prensa && prensa.length) { %>
 <section class="section alt">
+  <div class="wrap">
+    <h2 class="section-title"><%= ajustes.textos.tituloPrensa %></h2>
+    <div class="grid grid-3">
+      <% prensa.forEach(p => { %><%- include('partials/prensa-card', { p }) %><% }) %>
+    </div>
+    <p class="center"><a class="btn btn-ghost" href="/prensa">Ver todas las notas</a></p>
+  </div>
+</section>
+<% } %>
+
+<% if (rincon) { %>
+<section class="section">
   <div class="wrap narrow">
     <h2 class="section-title"><%= ajustes.textos.tituloRincon %></h2>
     <p class="meta"><%= fmtFecha(rincon.fecha) %></p>
@@ -56,7 +68,7 @@
 <% } %>
 
 <% if (ajustes.interruptores.eventos && eventos.length) { %>
-<section class="section">
+<section class="section alt">
   <div class="wrap">
     <h2 class="section-title"><%= ajustes.textos.tituloEventos %></h2>
     <div class="grid grid-3">
@@ -77,7 +89,7 @@
 <% } %>
 
 <% if (noticias.length) { %>
-<section class="section alt">
+<section class="section">
   <div class="wrap">
     <h2 class="section-title"><%= ajustes.textos.tituloNoticias %></h2>
     <div class="grid grid-3">

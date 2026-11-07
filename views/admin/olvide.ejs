@@ -1,0 +1,21 @@
+<%- include('partials/min-top', { titulo: 'Recuperar contraseña' }) %>
+<main class="a-card-solo">
+  <h1>Recuperar contraseña</h1>
+  <% if (locals.error) { %><div class="a-alert err" role="alert"><%= error %></div><% } %>
+  <% if (enviado) { %>
+    <div class="a-alert ok" role="status">Si ese correo tiene una cuenta, te enviamos un enlace para crear una nueva contraseña. Revisa también la carpeta de spam. El enlace dura 30 minutos y solo se puede usar una vez.</div>
+    <p class="a-center"><a href="/admin/login">← Volver al acceso</a></p>
+  <% } else if (!correoActivo) { %>
+    <div class="a-alert info">El envío de correos no está activado en este servidor, así que no se puede recuperar la contraseña desde aquí. Pide a quien administra el servidor que la restablezca. Si recuerdas tu contraseña actual, también puedes cambiarla dentro del panel, en <strong>Mi cuenta</strong>.</div>
+    <p class="a-center"><a href="/admin/login">← Volver al acceso</a></p>
+  <% } else { %>
+    <p class="a-muted">Escribe el correo con el que entras al panel y te enviaremos un enlace para crear una contraseña nueva.</p>
+    <form method="post" action="/admin/olvide" class="a-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="a-field"><label for="email">Correo</label><input id="email" type="email" name="email" required maxlength="160" autocomplete="username" autofocus></div>
+      <button class="a-btn" type="submit">Enviar enlace</button>
+      <p class="a-center"><a href="/admin/login">← Volver al acceso</a></p>
+    </form>
+  <% } %>
+</main>
+<%- include('partials/min-bottom') %>

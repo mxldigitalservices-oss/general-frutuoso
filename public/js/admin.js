@@ -1,3 +1,48 @@
+// Ojito para ver u ocultar contraseñas y aviso de coincidencia (aplica a todos los formularios del panel)
+(function () {
+  var OJO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var OJO_OFF = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M1 1l22 22"/><path d="M14.1 14.1a3 3 0 1 1-4.2-4.2"/></svg>';
+
+  Array.prototype.forEach.call(document.querySelectorAll('input[type="password"]'), function (inp) {
+    var wrap = document.createElement('span');
+    wrap.className = 'a-pass';
+    inp.parentNode.insertBefore(wrap, inp);
+    wrap.appendChild(inp);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'a-ojo';
+    b.setAttribute('aria-label', 'Mostrar contraseña');
+    b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = OJO;
+    b.addEventListener('click', function () {
+      var ver = inp.type === 'password';
+      inp.type = ver ? 'text' : 'password';
+      b.setAttribute('aria-pressed', String(ver));
+      b.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      b.innerHTML = ver ? OJO_OFF : OJO;
+      inp.focus();
+    });
+    wrap.appendChild(b);
+  });
+
+  [['clave', 'clave2'], ['claveNueva', 'claveNueva2']].forEach(function (par) {
+    var a = document.querySelector('[name="' + par[0] + '"]');
+    var c = document.querySelector('[name="' + par[1] + '"]');
+    if (!a || !c) return;
+    var msg = document.createElement('small');
+    msg.setAttribute('aria-live', 'polite');
+    c.closest('.a-field').appendChild(msg);
+    function revisar() {
+      if (!c.value) { msg.textContent = ''; return; }
+      var ok = a.value === c.value;
+      msg.textContent = ok ? '✔ Las contraseñas coinciden' : '✖ Las contraseñas no coinciden todavía';
+      msg.className = ok ? 'a-ok' : 'a-mal';
+    }
+    a.addEventListener('input', revisar);
+    c.addEventListener('input', revisar);
+  });
+})();
+
 (function () {
   var pv = document.getElementById('vista-previa');
   if (!pv) return;
@@ -50,4 +95,14 @@
   });
 
   aplicar();
+})();
+
+// Al subir un video: bloquear el botón para no enviarlo dos veces
+(function () {
+  var f = document.getElementById('form-video');
+  if (!f) return;
+  f.addEventListener('submit', function () {
+    var b = f.querySelector('button[type="submit"]');
+    if (b) { b.disabled = true; b.textContent = 'Subiendo… no cierres esta página'; }
+  });
 })();

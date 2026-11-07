@@ -10,6 +10,7 @@ const defaults = require('../config/defaults');
 const TTL = 300;
 const TIPOS_NOTICIA = ['noticia', 'articulo'];
 const TIPOS_RINCON = ['curiosidad', 'reel'];
+const TIPO_PRENSA = 'prensa';
 const SLUG = /^[a-z0-9-]{1,120}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -19,14 +20,15 @@ const texto = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 exports.inicio = async (req, res) => {
   const d = await cache.wrapSafe('home', TTL, async () => {
-    const [libros, eventos, noticias, rincon] = await Promise.all([
+    const [libros, eventos, noticias, rincon, prensa] = await Promise.all([
       Libro.find({ publicado: true }).sort({ destacado: -1, orden: 1 }).limit(3).lean(),
       Evento.find({ publicado: true, fecha: { $gte: hoy() } }).sort({ fecha: 1 }).limit(3).lean(),
       Publicacion.find({ publicado: true, tipo: { $in: TIPOS_NOTICIA } }).sort({ fecha: -1 }).limit(3).select('-contenido').lean(),
-      Publicacion.findOne({ publicado: true, tipo: { $in: TIPOS_RINCON } }).sort({ fecha: -1 }).lean()
+      Publicacion.findOne({ publicado: true, tipo: { $in: TIPOS_RINCON } }).sort({ fecha: -1 }).lean(),
+      Publicacion.find({ publicado: true, tipo: TIPO_PRENSA }).sort({ fecha: -1 }).limit(3).select('-contenido').lean()
     ]);
-    return { libros, eventos, noticias, rincon };
-  }, { libros: [], eventos: [], noticias: [], rincon: null });
+    return { libros, eventos, noticias, rincon, prensa };
+  }, { libros: [], eventos: [], noticias: [], rincon: null, prensa: [] });
   res.render('index', d);
 };
 
@@ -66,6 +68,19 @@ exports.noticia = async (req, res, next) => {
     () => Publicacion.findOne({ slug: req.params.slug, publicado: true, tipo: { $in: TIPOS_NOTICIA } }).lean(), null);
   if (!item) return next();
   res.render('noticia-detalle', { item });
+};
+
+exports.prensa = async (req, res) => {
+  const p = pagina(req); const LIM = 9;
+  const d = await cache.wrapSafe(`prensa:${p}`, TTL, async () => {
+    const q = { publicado: true, tipo: TIPO_PRENSA };
+    const [items, total] = await Promise.all([
+      Publicacion.find(q).sort({ fecha: -1 }).skip((p - 1) * LIM).limit(LIM).select('-contenido').lean(),
+      Publicacion.countDocuments(q)
+    ]);
+    return { items, total };
+  }, { items: [], total: 0 });
+  res.render('prensa', { items: d.items, p, paginas: Math.max(1, Math.ceil(d.total / LIM)) });
 };
 
 exports.rincon = async (req, res) => {
@@ -136,6 +151,7 @@ exports.sitemap = async (req, res) => {
   }), { libros: [], noticias: [] });
 
   const urls = ['/', '/biografia', '/libros', '/noticias', '/rincon-del-general', '/contacto'];
+  if (res.locals.hayPrensa) urls.push('/prensa');
   if (aj.interruptores.eventos) urls.push('/eventos');
   const filas = urls.map((u) => `<url><loc>${base}${u}</loc></url>`);
   d.libros.forEach((l) => filas.push(`<url><loc>${base}/libros/${l.slug}</loc><lastmod>${new Date(l.updatedAt).toISOString()}</lastmod></url>`));

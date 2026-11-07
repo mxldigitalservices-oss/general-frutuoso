@@ -8,6 +8,7 @@ router.get('/libros', c.libros);
 router.get('/libros/:slug', c.libro);
 router.get('/noticias', c.noticias);
 router.get('/noticias/:slug', c.noticia);
+router.get('/prensa', c.prensa);
 router.get('/rincon-del-general', c.rincon);
 router.get('/eventos', c.eventos);
 router.get('/en-vivo', c.enVivo);

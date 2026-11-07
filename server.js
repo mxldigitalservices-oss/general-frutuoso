@@ -22,6 +22,9 @@ async function main() {
 
   const { crearApp } = require('./app');
   const server = crearApp().listen(env.PORT, () => console.log(`✔ Portal en el puerto ${env.PORT}`));
+  server.keepAliveTimeout = 65 * 1000;          // mayor que el del proxy de Railway
+  server.headersTimeout = 66 * 1000;
+  server.requestTimeout = 15 * 60 * 1000;       // permite subir videos de hasta 100 MB con conexión lenta
 
   const apagar = (senal) => {
     console.log(`${senal}: cerrando…`);
