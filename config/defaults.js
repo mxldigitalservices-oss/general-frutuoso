@@ -5,9 +5,9 @@ module.exports = {
       heroEyebrow: 'General (r) · Abogado · Escritor',
       heroTitulo: 'Juan Manuel Fructuoso Heredia',
       heroSubtitulo: 'Más de 30 años al servicio de la verdad — primero en las calles, ahora en las páginas.',
-      tituloLibros: 'Obras',
-      tituloRincon: 'El Rincón del General',
-      tituloNoticias: 'Noticias y artículos',
+      tituloLibros: 'Publicaciones',
+      tituloRincon: 'Mi Rincón',
+      tituloNoticias: 'Novedades',
       tituloEventos: 'Eventos',
       tituloPrensa: 'En la prensa',
       tituloMilitar: 'Trayectoria militar y jurídica',
@@ -15,7 +15,7 @@ module.exports = {
       piePagina: '© Juan Manuel Fructuoso Heredia. Todos los derechos reservados.'
     },
     menu: {
-      inicio: 'Inicio', biografia: 'Biografía', libros: 'Libros', rincon: 'Rincón del General', noticias: 'Noticias',
+      inicio: 'Página Principal', biografia: 'Quién soy', libros: 'Publicaciones', rincon: 'Mi Rincón', noticias: 'Novedades',
       prensa: 'Prensa', eventos: 'Eventos', enVivo: 'En vivo', contacto: 'Contacto'
     },
     tema: { fondo: '#0b0e14', superficie: '#151b28', texto: '#f3ecd8', acento: '#c9a84c' },

@@ -17,21 +17,28 @@ function aplicarAjustes(res, aj) {
   res.locals.fuentesUrl = tema.urlFuentes([aj.tipografia.titulos, aj.tipografia.cuerpo]);
 }
 
-// Si hay dominio oficial configurado, cualquier otro host (p. ej. *.up.railway.app) redirige a él.
-function hostCanonico(req, res, next) {
-  if (req.hostname === env.CANONICAL_HOST || !['GET', 'HEAD'].includes(req.method)) return next();
-  res.redirect(301, `https://${env.CANONICAL_HOST}${req.originalUrl}`);
+// Un solo dominio para sitio y panel: cualquier otro host (www, *.up.railway.app, etc.) o http:// redirige a
+// https://CANONICAL_HOST conservando la ruta. Así la cookie de sesión de /admin siempre vive en el mismo origen.
+function forzarDominioYHttps(req, res, next) {
+  const host = String(req.hostname || '').toLowerCase();
+  const hostOk = !env.CANONICAL_HOST || host === env.CANONICAL_HOST;
+  // Solo se considera http si el proxy lo indica; sin la cabecera no se redirige (evita bucles).
+  const proto = String(req.get('x-forwarded-proto') || '').split(',')[0].trim().toLowerCase();
+  const httpsOk = !env.isProd || !proto || proto === 'https';
+  if (hostOk && httpsOk) return next();
+  const destino = `https://${env.CANONICAL_HOST || host}${req.originalUrl}`;
+  res.redirect(['GET', 'HEAD'].includes(req.method) ? 301 : 308, destino);
 }
 
 function crearApp() {
   const app = express();
   app.disable('x-powered-by');
-  app.set('trust proxy', 1); // Railway termina HTTPS en su proxy
+  app.set('trust proxy', env.TRUST_PROXY); // Railway termina HTTPS en su proxy
   app.set('view engine', 'ejs');
   app.set('views', path.join(env.ROOT, 'views'));
 
   app.get('/healthz', (req, res) => res.type('text').send('ok'));
-  if (env.CANONICAL_HOST) app.use(hostCanonico);
+  if (env.CANONICAL_HOST || env.isProd) app.use(forzarDominioYHttps);
 
   app.use(helmet({
     contentSecurityPolicy: {
@@ -58,7 +65,7 @@ function crearApp() {
   app.use((req, res, next) => {
     res.locals.site = {
       nombre: 'Juan Manuel Fructuoso Heredia',
-      url: env.SITE_URL || `${req.protocol}://${req.get('host')}`,
+      url: env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`,
       whatsapp: `https://wa.me/${env.WHATSAPP}`,
       amazonAutor: 'https://www.amazon.com/s?k=Juan+Manuel+Fructuoso+Heredia',
       correo: env.CONTACT_TO

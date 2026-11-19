@@ -15,6 +15,7 @@ function build() {
   }
   return session({
     name: 'fh.sid',
+    proxy: true, // detrás del proxy HTTPS de Railway: respeta X-Forwarded-Proto para la cookie Secure
     secret: env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,

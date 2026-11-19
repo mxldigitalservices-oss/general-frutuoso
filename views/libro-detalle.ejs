@@ -4,7 +4,7 @@
 <section class="section"><div class="wrap libro-det">
   <img class="libro-portada" src="<%= libro.portada || '/img/portada-placeholder.svg' %>" alt="Portada de <%= libro.titulo %>">
   <div>
-    <p class="eyebrow"><a href="/libros">← Todas las obras</a></p>
+    <p class="eyebrow"><a href="/libros">← <%= ajustes.menu.libros %></a></p>
     <h1><%= libro.titulo %></h1>
     <% if (libro.subtitulo) { %><p class="lead"><%= libro.subtitulo %></p><% } %>
     <ul class="ficha">

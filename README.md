@@ -21,7 +21,10 @@ Primer acceso: abre `/admin/setup`, escribe el SETUP_TOKEN y crea la cuenta del 
 Servicio web desde el repo + plugins PostgreSQL, MongoDB y Redis. Variables mínimas: `NODE_ENV=production`, `SESSION_SECRET` (32+ caracteres), `SETUP_TOKEN`, `DATABASE_URL`, `MONGO_URL`, `REDIS_URL`. Healthcheck: `/healthz`.
 
 ## Dominio oficial
-Define `SITE_URL=https://www.tudominio.com` y `CANONICAL_HOST=www.tudominio.com`; el resto de hosts redirige al dominio oficial (301).
+El sitio y el panel `/admin` operan unidos bajo `https://juanmanuelfructuosoheredia.com`. Variables en Railway: `PUBLIC_URL=https://juanmanuelfructuosoheredia.com` y `CANONICAL_HOST=juanmanuelfructuosoheredia.com` (`SITE_URL` se acepta como nombre anterior). En producción, si faltan, se usa ese mismo dominio como respaldo.
+- Cualquier otro host (`www.`, `*.up.railway.app`) y cualquier petición `http://` redirige (301) a `https://juanmanuelfructuosoheredia.com`; `/healthz` queda exento para el healthcheck de Railway.
+- Los enlaces de restablecimiento de contraseña, el sitemap y las URL canónicas usan `PUBLIC_URL`.
+- La cookie de sesión del panel (`fh.sid`) es `HttpOnly`, `SameSite=Lax` y `Secure` en producción, sin `Domain` (solo el dominio oficial); `trust proxy` = 1 (`TRUST_PROXY` para cambiarlo).
 
 ## Usuarios extra (asistente)
 `NEW_PASSWORD='clave-larga' npm run crear-usuario -- correo@dominio.com "Nombre" editor`
