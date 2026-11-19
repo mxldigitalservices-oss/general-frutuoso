@@ -18,7 +18,7 @@ exports.configurado = () => !!(env.GMAIL_USER && env.GMAIL_PASS);
 exports.notificarContacto = async ({ nombre, email, mensaje }) => {
   if (!configurado()) return false;
   await getTransporter().sendMail({
-    from: `"Portal Fructuoso Heredia" <${env.GMAIL_USER}>`,
+    from: `"Juan Manuel Fructuoso Heredia" <${env.GMAIL_USER}>`,
     to: env.CONTACT_TO,
     replyTo: email,
     subject: `Nuevo mensaje de ${nombre}`.replace(/[\r\n]/g, ' '),
@@ -30,7 +30,7 @@ exports.notificarContacto = async ({ nombre, email, mensaje }) => {
 // Enlace para crear una nueva contraseña (la URL se construye en el servidor con un código aleatorio).
 exports.enviarRestablecimiento = async ({ nombre, email, url }) => {
   await getTransporter().sendMail({
-    from: `"Portal Fructuoso Heredia" <${env.GMAIL_USER}>`,
+    from: `"Juan Manuel Fructuoso Heredia" <${env.GMAIL_USER}>`,
     to: email,
     subject: 'Restablecer tu contraseña del panel',
     text: `Hola ${nombre},\n\nRecibimos una solicitud para restablecer tu contraseña del panel. Usa este enlace (válido 30 minutos y de un solo uso):\n${url}\n\nSi no lo solicitaste, ignora este mensaje: tu contraseña no cambia.`,

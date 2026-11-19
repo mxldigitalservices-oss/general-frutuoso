@@ -115,7 +115,7 @@ const parseLineas = (txt, etiqueta, errors) => String(txt || '').split('\n').map
 }).filter(Boolean);
 
 const biografia = {
-  ruta: 'biografia', singular: 'biografía', plural: 'Sobre mí', roles: ['admin'],
+  ruta: 'biografia', singular: 'biografía', plural: 'Biografía', roles: ['admin'],
   fields: [
     { name: 'nombre', label: 'Nombre', type: 'text', required: true, max: 160 },
     { name: 'titulo', label: 'Cargos (ej. General (r) · Abogado · Escritor)', type: 'text', max: 200 },

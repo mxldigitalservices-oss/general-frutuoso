@@ -7,7 +7,7 @@ const cache = require('../utils/cache');
 const Auditoria = require('../models/sql/Auditoria');
 
 const vista = (res, extra) => res.render('admin/form', {
-  cfg, base: '/admin/biografia', action: '/admin/biografia', titulo: 'Sobre mí', esNuevo: false, unico: true, errors: [], ok: null, ...extra
+  cfg, base: '/admin/biografia', action: '/admin/biografia', titulo: 'Biografía', esNuevo: false, unico: true, errors: [], ok: null, ...extra
 });
 
 exports.form = async (req, res) => {
@@ -19,7 +19,7 @@ exports.guardar = async (req, res, next) => {
   const actual = await Biografia.findOne({ clave: 'principal' }).lean().catch(() => null);
   const previo = actual || defaults.biografia;
   const mostrar = (data, errors) => res.status(422).render('admin/form', {
-    cfg, base: '/admin/biografia', action: '/admin/biografia', titulo: 'Sobre mí', esNuevo: false, unico: true, errors, ok: null,
+    cfg, base: '/admin/biografia', action: '/admin/biografia', titulo: 'Biografía', esNuevo: false, unico: true, errors, ok: null,
     item: { ...cfg.aFormulario(previo), ...data }
   });
 
@@ -39,6 +39,6 @@ exports.guardar = async (req, res, next) => {
   }
   await imagenes.eliminar(b.replaced);
   await cache.invalidate();
-  await Auditoria.registrar(req.session.user.id, 'editar', 'biografia', null, 'Sobre mí');
+  await Auditoria.registrar(req.session.user.id, 'editar', 'biografia', null, 'Biografía');
   res.redirect('/admin/biografia?ok=' + encodeURIComponent('Biografía guardada'));
 };
