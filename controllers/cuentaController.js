@@ -22,7 +22,7 @@ exports.guardar = async (req, res, next) => {
     if (!v.nombre) errors.push('El nombre es obligatorio.');
     if (!EMAIL.test(v.email)) errors.push('El correo no es válido.');
     if (nueva) {
-      if (nueva.length < 10) errors.push('La nueva contraseña debe tener al menos 10 caracteres.');
+      if (nueva.length < 5) errors.push('La nueva contraseña debe tener al menos 5 caracteres.');
       else if (nueva.length > 72) errors.push('La nueva contraseña no puede superar 72 caracteres.');
       else if (nueva !== nueva2) errors.push('Las contraseñas nuevas no coinciden.');
       else if (nueva.toLowerCase() === v.email) errors.push('La contraseña no puede ser igual al correo.');

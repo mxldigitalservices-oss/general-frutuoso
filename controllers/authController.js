@@ -51,7 +51,7 @@ exports.setup = async (req, res, next) => {
     if (!crypto.timingSafeEqual(sha(token || ''), sha(env.SETUP_TOKEN))) errors.push('El código de configuración no es correcto.');
     if (!v.nombre) errors.push('El nombre es obligatorio.');
     if (!EMAIL.test(v.email)) errors.push('El correo no es válido.');
-    if (typeof clave !== 'string' || clave.length < 10) errors.push('La contraseña debe tener al menos 10 caracteres.');
+    if (typeof clave !== 'string' || clave.length < 5) errors.push('La contraseña debe tener al menos 5 caracteres.');
     else if (clave.length > 72) errors.push('La contraseña no puede superar 72 caracteres.');
     else if (clave !== clave2) errors.push('Las contraseñas no coinciden.');
     if (errors.length) return res.status(422).render('admin/setup', { errors, valores: v });
@@ -100,7 +100,7 @@ exports.restablecer = async (req, res, next) => {
     if (!TOKEN.test(t)) return res.status(400).render('admin/restablecer', { valido: false, errors: [], token: '' });
     const { clave, clave2 } = req.body;
     const errors = [];
-    if (typeof clave !== 'string' || clave.length < 10) errors.push('La contraseña debe tener al menos 10 caracteres.');
+    if (typeof clave !== 'string' || clave.length < 5) errors.push('La contraseña debe tener al menos 5 caracteres.');
     else if (clave.length > 72) errors.push('La contraseña no puede superar 72 caracteres.');
     else if (clave !== clave2) errors.push('Las contraseñas no coinciden.');
     if (errors.length) return res.status(422).render('admin/restablecer', { valido: true, errors, token: t });

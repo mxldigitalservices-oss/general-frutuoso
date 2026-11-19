@@ -32,6 +32,37 @@ exports.guardar = async ({ nombre, email, clave, rol = 'editor' }) => {
   return r.rows[0];
 };
 
+// ── Gestión de usuarios (panel) ──
+exports.listar = async () =>
+  (await query('SELECT id, nombre, email, rol, activo, creado_en, ultimo_acceso FROM usuarios ORDER BY id')).rows;
+
+// Crea un usuario nuevo. Si el correo ya existe lanza el error 23505 (no pisa cuentas existentes).
+exports.crear = async ({ nombre, email, clave, rol = 'admin' }) => {
+  const hash = await exports.hashear(clave);
+  const r = await query(
+    'INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, rol',
+    [nombre, String(email).toLowerCase(), hash, rol]
+  );
+  return r.rows[0];
+};
+
+exports.estaActivo = async (id) => {
+  const r = await query('SELECT activo FROM usuarios WHERE id = $1', [id]);
+  return r.rowCount > 0 && r.rows[0].activo === true;
+};
+
+// Activa o desactiva. Nunca deja el panel sin al menos un administrador activo. Devuelve true si cambió algo.
+exports.cambiarActivo = async (id, activo) => {
+  const r = await query(
+    `UPDATE usuarios SET activo = $2
+      WHERE id = $1
+        AND ($2 = TRUE OR rol <> 'admin' OR EXISTS (SELECT 1 FROM usuarios o WHERE o.rol = 'admin' AND o.activo = TRUE AND o.id <> $1))
+      RETURNING id`,
+    [id, activo]
+  );
+  return r.rowCount > 0;
+};
+
 exports.registrarAcceso = (id) => query('UPDATE usuarios SET ultimo_acceso = NOW() WHERE id = $1', [id]).catch(() => {});
 
 // Cambia nombre, correo y (opcionalmente) contraseña de la propia cuenta.

@@ -1,0 +1,19 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Nuevo administrador</h1></div>
+<%- include('partials/avisos') %>
+<p class="a-muted">Crea una cuenta de acceso al panel. La contraseña se guarda cifrada (bcrypt); mínimo 5 caracteres.</p>
+<form method="post" action="/admin/usuarios/nuevo" class="a-form">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <div class="a-field"><label for="nombre">Nombre</label><input id="nombre" type="text" name="nombre" required maxlength="120" value="<%= valores.nombre || '' %>" autofocus></div>
+  <div class="a-field"><label for="email">Correo (será su usuario)</label><input id="email" type="email" name="email" required maxlength="160" value="<%= valores.email || '' %>" autocomplete="off"></div>
+  <div class="a-field"><label for="rol">Rol</label>
+    <select id="rol" name="rol">
+      <option value="admin" <%= (valores.rol || 'admin') === 'admin' ? 'selected' : '' %>>Administrador (acceso total)</option>
+      <option value="editor" <%= valores.rol === 'editor' ? 'selected' : '' %>>Editor (libros, eventos y noticias)</option>
+    </select>
+  </div>
+  <div class="a-field"><label for="clave">Contraseña (mínimo 5 caracteres)</label><input id="clave" type="password" name="clave" required minlength="5" maxlength="72" autocomplete="new-password"></div>
+  <div class="a-field"><label for="clave2">Repite la contraseña</label><input id="clave2" type="password" name="clave2" required minlength="5" maxlength="72" autocomplete="new-password"></div>
+  <div class="a-bar"><button class="a-btn" type="submit">Crear cuenta</button> <a class="a-btn ghost" href="/admin/usuarios">Cancelar</a></div>
+</form>
+<%- include('partials/bottom') %>

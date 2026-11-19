@@ -36,5 +36,6 @@ router.use('/videos', require('./videos'));
 router.use('/biografia', require('./biografia'));
 router.use('/apariencia', require('./apariencia'));
 router.use('/cuenta', require('./cuenta'));
+router.use('/usuarios', requireRole('admin'), require('./usuarios'));
 
 module.exports = router;
