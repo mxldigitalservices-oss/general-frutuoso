@@ -12,6 +12,7 @@
         <a class="btn" href="/libros"><%= ajustes.menu.libros %></a>
         <a class="btn btn-ghost" href="/biografia"><%= ajustes.menu.biografia %></a>
       </div>
+      <%- include('partials/redes', { variante: 'hero' }) %>
     </div>
     <% if (libros.length) { %>
     <a class="hero-libro" href="/libros/<%= libros[0].slug %>" aria-label="Ver <%= libros[0].titulo %>">

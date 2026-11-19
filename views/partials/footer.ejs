@@ -3,6 +3,7 @@
     <div>
       <strong class="foot-nombre"><%= site.nombre %></strong>
       <p><%= ajustes.textos.piePagina %></p>
+      <%- include('redes', { variante: 'footer' }) %>
     </div>
     <ul class="foot-links">
       <li><a href="/libros"><%= ajustes.menu.libros %></a></li>

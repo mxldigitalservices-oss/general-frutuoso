@@ -1,0 +1,7 @@
+<% if (locals.redes && redes.length) { %>
+<ul class="redes redes-<%= locals.variante || 'footer' %>" aria-label="Redes sociales">
+  <% redes.forEach(r => { %>
+  <li><a href="<%= r.url %>" target="_blank" rel="noopener noreferrer me" aria-label="<%= r.nombre %>" title="<%= r.nombre %>"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="<%= r.icono %>"/></svg></a></li>
+  <% }) %>
+</ul>
+<% } %>

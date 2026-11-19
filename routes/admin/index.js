@@ -35,6 +35,7 @@ router.use('/publicaciones', require('./publicaciones'));
 router.use('/videos', require('./videos'));
 router.use('/biografia', require('./biografia'));
 router.use('/apariencia', require('./apariencia'));
+router.use('/redes', require('./redes'));
 router.use('/cuenta', require('./cuenta'));
 router.use('/usuarios', requireRole('admin'), require('./usuarios'));
 

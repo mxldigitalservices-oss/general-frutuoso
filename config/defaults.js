@@ -22,7 +22,9 @@ module.exports = {
     tipografia: { titulos: 'playfair', cuerpo: 'inter' },
     cubrefalta: { modo: 'marco', etiqueta: 'Canal oficial · Juan Manuel Fructuoso Heredia', colorMarco: '', logo: '' },
     interruptores: { eventos: true, enVivo: false },
-    enVivo: { titulo: 'Transmisión en vivo', url: '', youtubeId: '' }
+    enVivo: { titulo: 'Transmisión en vivo', url: '', youtubeId: '' },
+    // Redes sociales: enlace completo (https://...). Vacío = no se muestra en el sitio.
+    redes: { facebook: '', instagram: '', youtube: '', x: '', tiktok: '', linkedin: '', threads: '' }
   },
   biografia: {
     clave: 'principal',

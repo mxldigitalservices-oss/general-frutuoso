@@ -134,6 +134,14 @@ p{margin:0 0 1em}
 .foot-nombre{font-family:var(--font-titulos);color:var(--text)}
 .foot-links{list-style:none;margin:0;padding:0;display:flex;gap:1.2rem;flex-wrap:wrap}
 
+/* Redes sociales (Página Principal y pie) */
+.redes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem}
+.redes a{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;color:var(--muted);background:transparent;transition:color .15s,border-color .15s,background-color .15s}
+.redes a:hover,.redes a:focus-visible{color:var(--accent);border-color:var(--accent);filter:none;background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.redes svg{width:18px;height:18px;fill:currentColor;display:block}
+.redes-hero{margin-top:1.3rem;justify-content:flex-start}
+.redes-footer{margin-top:1rem}
+
 @media (max-width:860px){
   .hero-grid,.libro-det,.contacto-grid{grid-template-columns:1fr}
   .hero-libro{order:-1}
@@ -145,6 +153,7 @@ p{margin:0 0 1em}
   .nav a{padding:.7rem 0;width:100%}
   .nav-toggle:checked ~ .nav{display:flex}
   .timeline li{grid-template-columns:1fr;gap:.2rem}
+  .redes a{width:44px;height:44px}
 }
 @media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
 

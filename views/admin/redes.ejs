@@ -1,0 +1,22 @@
+<%- include('partials/top') %>
+<div class="a-head"><h1>Redes sociales</h1></div>
+<%- include('partials/avisos') %>
+<p class="a-muted">Pega el enlace completo de cada perfil (debe empezar con https://). Los iconos aparecen en la Página Principal, debajo de los botones, y en el pie de página. Si dejas una casilla vacía, esa red no se muestra en el sitio.</p>
+
+<form method="post" action="/admin/redes" class="a-form" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <div class="a-redes">
+    <% lista.forEach(r => { %>
+    <div class="a-red">
+      <span class="a-red-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="<%= r.icono %>"/></svg></span>
+      <div class="a-field">
+        <label for="r_<%= r.id %>"><%= r.nombre %></label>
+        <input id="r_<%= r.id %>" type="url" name="r_<%= r.id %>" maxlength="300" inputmode="url" autocomplete="off" value="<%= (aj.redes && aj.redes[r.id]) || '' %>" placeholder="<%= r.placeholder %>">
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <small class="a-hint">Solo se aceptan enlaces https:// o http://. Para quitar una red, borra su enlace y guarda.</small>
+  <div class="a-bar"><button class="a-btn" type="submit">Guardar redes sociales</button></div>
+</form>
+<%- include('partials/bottom') %>

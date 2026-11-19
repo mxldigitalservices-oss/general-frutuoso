@@ -7,6 +7,7 @@ const defaults = require('./config/defaults');
 const sessionCfg = require('./config/session');
 const ajustesSvc = require('./utils/ajustes');
 const tema = require('./utils/tema');
+const redesSvc = require('./utils/redes');
 const cache = require('./utils/cache');
 const Publicacion = require('./models/Publicacion');
 const { media } = require('./controllers/mediaController');
@@ -15,6 +16,7 @@ function aplicarAjustes(res, aj) {
   res.locals.ajustes = aj;
   res.locals.temaCss = tema.cssTema(aj);
   res.locals.fuentesUrl = tema.urlFuentes([aj.tipografia.titulos, aj.tipografia.cuerpo]);
+  res.locals.redes = redesSvc.activas(aj); // solo redes con enlace válido guardado
 }
 
 // Un solo dominio para sitio y panel: cualquier otro host (www, *.up.railway.app, etc.) o http:// redirige a

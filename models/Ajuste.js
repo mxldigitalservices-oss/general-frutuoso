@@ -17,7 +17,8 @@ const ajusteSchema = new mongoose.Schema({
   tipografia: { titulos: String, cuerpo: String },
   cubrefalta: { modo: String, etiqueta: String, colorMarco: String, logo: String },
   interruptores: { eventos: Boolean, enVivo: Boolean },
-  enVivo: { titulo: String, url: String, youtubeId: String }
+  enVivo: { titulo: String, url: String, youtubeId: String },
+  redes: { facebook: String, instagram: String, youtube: String, x: String, tiktok: String, linkedin: String, threads: String }
 }, { timestamps: true });
 
 module.exports = mongoose.models.Ajuste || mongoose.model('Ajuste', ajusteSchema);
